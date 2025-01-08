@@ -148,7 +148,7 @@ const StatsBadge = styled.div`
     font-weight: 500;
     font-size: 16px;
     line-height: 24px;
-    color: #525252;
+    color: #323232;
 
     a,
     a:link,
@@ -183,9 +183,9 @@ const StreamStatsBadge = ({ streamIds, ...props }: StreamStatsBadgeProps) => {
         <BadgeContainer {...props}>
             <StatsBadge>
                 <span>
-                    {streamIds.length} {streamIds.length === 1 ? 'stream' : 'streams'}
+                    {streamIds.length} {streamIds.length === 1 ? 'Stream' : 'Streams'}
                 </span>
-                <span>{formattedMsgRate} msg/s</span>
+                <span>{formattedMsgRate} Msg/s</span>
             </StatsBadge>
         </BadgeContainer>
     )
