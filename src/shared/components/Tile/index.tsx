@@ -13,7 +13,7 @@ import { useCurrentChainId } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
 import { useCurrentChainSymbolicName } from '~/utils/chains'
 import Summary from './Summary'
-import { DataUnionBadge } from './Badge'
+import { DataUnionBadge, StreamStatsBadge } from './Badge'
 
 const Image = styled(Img)`
     img& {
@@ -212,10 +212,11 @@ function MarketplaceProductTile({
                         />
                     </TileImageContainer>
                 </Link>
+                <StreamStatsBadge top left streamIds={product.streams} />
                 {!!showDataUnionBadge && (
                     <DataUnionBadge
                         top
-                        left
+                        right
                         linkTo={R.projectOverview(
                             product.id,
                             routeOptions(chainName, undefined, 'stats'),

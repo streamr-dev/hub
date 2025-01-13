@@ -1,12 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
 import React, { ReactNode } from 'react'
 import styled from 'styled-components'
-import { getIndexerClient } from '~/getters/getGraphClient'
-import {
-    GetStreamsDocument,
-    GetStreamsQuery,
-    GetStreamsQueryVariables,
-} from '../generated/gql/indexer'
+import { defaultStreamStats } from '~/getters/getStreamStats'
+import { useStreamStatsQuery } from '~/hooks/useStreamStats'
 
 type StatProps = {
     id: string
@@ -88,51 +83,8 @@ const ButtonGrid = styled.div`
     }
 `
 
-function useStreamStatsQuery(streamId: string) {
-    return useQuery({
-        queryKey: ['useStreamStatsQuery', streamId],
-        queryFn: async () => {
-            const client = getIndexerClient(137)
-
-            if (!client) {
-                return defaultStreamStats
-            }
-
-            const {
-                data: { streams },
-            } = await client.query<GetStreamsQuery, GetStreamsQueryVariables>({
-                query: GetStreamsDocument,
-                variables: {
-                    streamIds: [streamId],
-                    first: 1,
-                },
-            })
-
-            const [stream = undefined] = streams.items
-
-            if (!stream) {
-                return null
-            }
-
-            const { messagesPerSecond, peerCount } = stream
-
-            return {
-                latency: undefined as undefined | number,
-                messagesPerSecond,
-                peerCount,
-            }
-        },
-    })
-}
-
 interface StreamStatsProps {
     streamId: string
-}
-
-const defaultStreamStats = {
-    latency: undefined,
-    messagesPerSecond: undefined,
-    peerCount: undefined,
 }
 
 export function StreamStats({ streamId }: StreamStatsProps) {
