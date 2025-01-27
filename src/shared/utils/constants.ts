@@ -19,7 +19,7 @@ export const paymentCurrencies = {
     NATIVE: 'NATIVE',
 }
 
-export const ethereumNetworks = {
+export const ethereumNetworkDisplayName = {
     '1': 'Ethereum Mainnet',
     '3': 'Ropsten',
     '4': 'Rinkeby',
@@ -32,5 +32,7 @@ export const ethereumNetworks = {
     '31337': 'Dev2',
     '80002': 'Amoy',
 }
+
+export const defaultEthereumNetwork = 'polygon'
 
 export const maxFileSizeForImageUpload = 5242880

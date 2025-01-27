@@ -1,5 +1,5 @@
 [development]
-availableChains = ['dev2', 'polygon', 'amoy']
+availableChains = ['dev2', 'polygon', 'amoy', 'peaq', 'iotex']
 platformOriginUrl = ""
 streamrUrl = ""
 

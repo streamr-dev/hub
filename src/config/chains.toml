@@ -19,6 +19,12 @@ address = "0xde1112f631486CfC759A50196853011528bC5FA0"
 chainId = 31337
 name = "streamr-dev/dataunion"
 
+[iotex]
+networkSubgraphUrl = "https://api.studio.thegraph.com/query/58754/streamr-iotex/version/latest"
+
+[peaq]
+networkSubgraphUrl = "https://api.studio.thegraph.com/query/58729/streamr-amoy-testnet/version/latest"
+
 [amoy]
 dataUnionJoinServerUrl = "https://join.dataunions.org/"
 marketplaceChains = ['amoy']

@@ -8,15 +8,30 @@ import {
     parsedChainConfigExtension,
 } from '~/utils/chainConfigExtension'
 import { Chain } from '~/types'
-import { ethereumNetworks } from '~/shared/utils/constants'
+import { ethereumNetworkDisplayName, defaultEthereumNetwork } from '~/shared/utils/constants'
 import formatConfigUrl from './formatConfigUrl'
 
-function getPreferredChainName(chainName: string) {
-    if (/amoy/i.test(chainName)) {
-        return 'amoy'
+/**
+ * @param chainNameOrId Chain name from displayNames or config (if string), or chainId (if number)
+ * @returns Chain name as enumerated in @streamr/config, or default ("polygon" as of 2024) if not found
+ */
+function parseChainName(chainNameOrId: string | number): string {
+    if (typeof chainNameOrId === 'string') {
+        const nameFromConfig = Object.keys(configs).find(configChainName =>
+            chainNameOrId.toLowerCase() === configChainName.toLowerCase()
+        )
+        const [chainIdString, _] = Object.entries(ethereumNetworkDisplayName).find(([_, displayName]) =>
+            chainNameOrId.toLowerCase() == displayName.toLowerCase()
+        ) ?? []
+        const nameFromDisplayNames = Object.keys(configs).find(configChainName =>
+            configs[configChainName].id.toString() === chainIdString
+        )
+        return nameFromConfig ?? nameFromDisplayNames ?? defaultEthereumNetwork
+    } else {
+        return Object.keys(configs).find(configChainName =>
+            configs[configChainName].id === chainNameOrId
+        ) ?? defaultEthereumNetwork
     }
-
-    return chainName.toLowerCase()
 }
 
 function getChainConfigWithFallback(chainName: string): Chain {
@@ -24,12 +39,12 @@ function getChainConfigWithFallback(chainName: string): Chain {
         return getChainConfig(chainName)
     } catch (_) {}
 
-    return getChainConfig('polygon')
+    return getChainConfig(defaultEthereumNetwork)
 }
 
 export function getCurrentChain() {
     return getChainConfigWithFallback(
-        new URLSearchParams(window.location.search).get('chain') || 'polygon',
+        new URLSearchParams(window.location.search).get('chain') || defaultEthereumNetwork,
     )
 }
 
@@ -38,7 +53,7 @@ export function getCurrentChainId() {
 }
 
 export function useCurrentChain() {
-    const chainName = useSearchParams()[0].get('chain') || 'polygon'
+    const chainName = useSearchParams()[0].get('chain') || defaultEthereumNetwork
 
     return useMemo(() => getChainConfigWithFallback(chainName), [chainName])
 }
@@ -62,87 +77,57 @@ export function useCurrentChainFullName() {
 }
 
 interface ChainEntry {
+    name: string
     config: Chain
     configExtension: ChainConfigExtension
-    symbolicName: string
 }
 
-const chainEntriesByIdOrName: Partial<Record<string | number, ChainEntry | null>> = {}
+const chainEntries: Record<string, ChainEntry | null> = {}
 
-function getChainEntry(chainIdOrName: string | number) {
-    const key =
-        typeof chainIdOrName === 'string'
-            ? getPreferredChainName(chainIdOrName)
-            : chainIdOrName
+function getChainEntry(chainIdOrName: string | number): ChainEntry {
+    const chainName = parseChainName(chainIdOrName)
 
-    let entry = chainEntriesByIdOrName[key]
+    if (!(chainName in chainEntries)) {
+        const config = configs[chainName]
 
-    if (typeof entry === 'undefined') {
-        entry = (() => {
-            const source = Object.entries<Chain>(configs).find(([symbolicName, config]) =>
-                typeof chainIdOrName === 'string'
-                    ? getPreferredChainName(chainIdOrName) ===
-                      getPreferredChainName(symbolicName)
-                    : chainIdOrName === config.id,
-            )
+        const configExtension =
+            parsedChainConfigExtension[chainName] || fallbackChainConfigExtension
 
-            if (!source) {
-                return null
+        const { dockerHost } = configExtension
+
+        const sanitizedConfig = produce(config, (draft) => {
+            draft.name = ethereumNetworkDisplayName[config.id] || config.name
+
+            for (const rpc of draft.rpcEndpoints) {
+                rpc.url = formatConfigUrl(rpc.url, {
+                    dockerHost,
+                })
             }
 
-            const [rawSymbolicName, config] = source
-
-            const symbolicName = getPreferredChainName(rawSymbolicName)
-
-            const configExtension =
-                parsedChainConfigExtension[symbolicName] || fallbackChainConfigExtension
-
-            const { dockerHost } = configExtension
-
-            const sanitizedConfig = produce(config, (draft) => {
-                draft.name = ethereumNetworks[config.id] || config.name
-
-                for (const rpc of draft.rpcEndpoints) {
-                    rpc.url = formatConfigUrl(rpc.url, {
-                        dockerHost,
-                    })
+            if (draft.entryPoints) {
+                for (const entrypoint of draft.entryPoints) {
+                    entrypoint.websocket.host = formatConfigUrl(
+                        entrypoint.websocket.host,
+                        {
+                            dockerHost,
+                        },
+                    )
                 }
-
-                if (draft.entryPoints) {
-                    for (const entrypoint of draft.entryPoints) {
-                        entrypoint.websocket.host = formatConfigUrl(
-                            entrypoint.websocket.host,
-                            {
-                                dockerHost,
-                            },
-                        )
-                    }
-                }
-
-                if (draft.theGraphUrl) {
-                    draft.theGraphUrl = formatConfigUrl(draft.theGraphUrl, { dockerHost })
-                }
-            })
-
-            return {
-                symbolicName,
-                config: sanitizedConfig,
-                configExtension,
             }
-        })()
 
-        chainEntriesByIdOrName[key] = entry
+            if (draft.theGraphUrl) {
+                draft.theGraphUrl = formatConfigUrl(draft.theGraphUrl, { dockerHost })
+            }
+        })
+
+        chainEntries[chainName] = {
+            name: chainName,
+            config: sanitizedConfig,
+            configExtension,
+        }
     }
 
-    if (!entry) {
-        throw new Error(
-            `Could not find config for "${chainIdOrName}" (${
-                typeof chainIdOrName === 'string' ? 'chain name' : 'chain id'
-            })`,
-        )
-    }
-
-    return entry
+    return chainEntries[chainName]!
 }
 
 export function getChainConfig(chainIdOrSymbolicName: string | number): Chain {
@@ -150,7 +135,7 @@ export function getChainConfig(chainIdOrSymbolicName: string | number): Chain {
 }
 
 export function getSymbolicChainName(chainId: number) {
-    return getChainEntry(chainId).symbolicName
+    return getChainEntry(chainId).name
 }
 
 export function getChainConfigExtension(chainId: number) {
