@@ -96,7 +96,7 @@ export function useStreamEntityQuery() {
                     throw new StreamNotFoundError(streamId)
                 }
 
-                const metadata = stream.getMetadata()
+                const metadata = await stream.getMetadata()
 
                 let storageNodes: string[] | undefined
 
@@ -215,7 +215,7 @@ export function usePersistStreamDraft(options: UsePersistStreamDraftOptions = {}
                 }
 
                 permissionAssignments.push({
-                    user: account,
+                    userId: account,
                     permissions,
                 })
             }
@@ -419,10 +419,11 @@ export function usePersistStreamDraft(options: UsePersistStreamDraftOptions = {}
 
                         await checkBalance(client)
 
-                        return client.updateStream({
+                        await client.setStreamMetadata(streamId, {
                             ...finalMetadata,
-                            id: streamId,
                         })
+
+                        return client.getStream(streamId)
                     }
 
                     client = await getStreamrClientInstance(chainId)
@@ -431,10 +432,11 @@ export function usePersistStreamDraft(options: UsePersistStreamDraftOptions = {}
                 })()
 
                 const currentStreamId = stream.id
+                const currentMetadata = await stream.getMetadata()
 
                 const newMetadata = parseStream(stream, {
                     chainId,
-                    metadata: stream.getMetadata(),
+                    metadata: currentMetadata,
                 }).metadata
 
                 update((hot, cold) => {
