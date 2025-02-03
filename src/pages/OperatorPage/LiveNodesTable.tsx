@@ -50,6 +50,13 @@ export function LiveNodesTable({
                 },
                 {
                     align: 'start',
+                    displayName: 'Version',
+                    isSticky: false,
+                    key: 'version',
+                    valueMapper: ({ applicationVersion }) => applicationVersion || 'N/A',
+                },
+                {
+                    align: 'start',
                     displayName: 'Host',
                     isSticky: false,
                     key: 'host',

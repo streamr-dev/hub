@@ -105,7 +105,7 @@ const useStreamAbilitiesStore = create<Store>((set, get) => {
                               public: true,
                           }
                         : {
-                              user: account,
+                              userId: account,
                               permission,
                               allowPublic: true,
                           },

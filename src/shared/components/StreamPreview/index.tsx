@@ -69,13 +69,8 @@ const UnstyledStreamPreview: FunctionComponent<StreamPreviewPros> = ({
     )
     const [partition, setPartition] = useState<number>(activePartition)
     const [loading, setIsLoading] = useState<boolean>()
-    const [stream, setStream] = useState<Stream>()
-    const { partitions } = stream?.getMetadata() || {}
-    const partitionOptions = useMemo(
-        () =>
-            partitions ? [...new Array(partitions)].map((_, index) => index) : undefined,
-        [partitions],
-    )
+    const [_, setStream] = useState<Stream>()
+    const [partitions, setPartitions] = useState<number>()
     const streamData = useStreamData(selectedStreamId, {
         tail: 20,
         partition,
@@ -85,13 +80,25 @@ const UnstyledStreamPreview: FunctionComponent<StreamPreviewPros> = ({
         const loadStreamData = async () => {
             if (client) {
                 setIsLoading(true)
-                const result = await client.getStream(selectedStreamId)
-                setIsLoading(false)
-                setStream(result)
+                try {
+                    const result = await client.getStream(selectedStreamId)
+                    setStream(result)
+                    const metadata = await result.getMetadata()
+                    const partitionCount = metadata.partitions as number
+                    setPartitions(partitionCount)
+                } finally {
+                    setIsLoading(false)
+                }
             }
         }
         loadStreamData()
     }, [selectedStreamId, client])
+
+    const partitionOptions = useMemo(
+        () =>
+            partitions ? [...new Array(partitions)].map((_, index) => index) : undefined,
+        [partitions],
+    )
 
     return (
         <>

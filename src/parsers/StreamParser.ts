@@ -34,7 +34,8 @@ export function parseStream(value: unknown, options: ParseStreamOptions) {
         const permissions: Record<string, number | null | undefined> = {}
 
         permissionAssignments.forEach((assignment) => {
-            const user = 'user' in assignment ? assignment.user.toLowerCase() : address0
+            const user =
+                'userId' in assignment ? assignment.userId.toLowerCase() : address0
 
             permissions[user] = assignment.permissions.reduce(
                 (memo, permission) => memo | Bits[permission],

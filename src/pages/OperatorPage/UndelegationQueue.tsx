@@ -154,7 +154,7 @@ export function UndelegationQueue({ operatorId }: Props) {
                     ),
                     align: 'end',
                     isSticky: false,
-                    key: 'requestDate',
+                    key: 'requestTime',
                 },
                 {
                     displayName: '',

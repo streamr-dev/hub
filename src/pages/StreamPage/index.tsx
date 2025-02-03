@@ -294,7 +294,10 @@ function StreamEntityForm(props: StreamEntityFormProps) {
                  * and, if so, invalidate associated stream abilities.
                  */
 
-                if ('user' in assignment && assignment.user.toLowerCase() === account) {
+                if (
+                    'userId' in assignment &&
+                    assignment.userId.toLowerCase() === account
+                ) {
                     invalidateAbilities(streamId, account)
 
                     break
