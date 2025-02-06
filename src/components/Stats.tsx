@@ -104,7 +104,7 @@ export function StreamStats({ streamId }: StreamStatsProps) {
                 <Stat
                     id="latency"
                     label="Latency ms"
-                    value={latency == null ? undefined : latency.toFixed(2)}
+                    value={latency == null ? undefined : latency.toFixed(0)}
                 />
             </ButtonGrid>
         </StreamStatsRoot>

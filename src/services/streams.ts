@@ -170,7 +170,16 @@ export const getPagedStreams = async (
     })
 
     if (streams && streams.length > 0) {
-        return prepareStreamResult(streams, first)
+        return prepareStreamResult(
+            streams.map((s) => ({
+                ...s,
+                permissions: s.permissions?.map((p) => ({
+                    ...p,
+                    userAddress: p.userId, // We need to add this deprecated field for now
+                })),
+            })),
+            first,
+        )
     }
 
     return {

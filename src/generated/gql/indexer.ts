@@ -35,6 +35,7 @@ export type Neighbor = {
   __typename?: 'Neighbor';
   nodeId1: Scalars['String']['output'];
   nodeId2: Scalars['String']['output'];
+  rtt?: Maybe<Scalars['Int']['output']>;
   streamPartId: Scalars['String']['output'];
 };
 
@@ -157,6 +158,17 @@ export type GetGlobalStreamsStatsQueryVariables = Exact<{ [key: string]: never; 
 
 export type GetGlobalStreamsStatsQuery = { __typename?: 'Query', summary: { __typename?: 'Summary', bytesPerSecond: number, messagesPerSecond: number, streamCount: number } };
 
+export type GetNeighborsQueryVariables = Exact<{
+  cursor?: InputMaybe<Scalars['String']['input']>;
+  pageSize?: InputMaybe<Scalars['Int']['input']>;
+  streamPart?: InputMaybe<Scalars['String']['input']>;
+  node?: InputMaybe<Scalars['String']['input']>;
+  streamId?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetNeighborsQuery = { __typename?: 'Query', neighbors: { __typename?: 'Neighbors', cursor?: string | null, items: Array<{ __typename?: 'Neighbor', streamPartId: string, nodeId1: string, nodeId2: string, rtt?: number | null }> } };
+
 
 export const GetStreamsDocument = gql`
     query getStreams($streamIds: [String!], $first: Int, $orderBy: StreamOrderBy, $orderDirection: OrderDirection, $search: String, $owner: String, $cursor: String) {
@@ -193,3 +205,23 @@ export const GetGlobalStreamsStatsDocument = gql`
 }
     `;
 export type GetGlobalStreamsStatsQueryResult = Apollo.QueryResult<GetGlobalStreamsStatsQuery, GetGlobalStreamsStatsQueryVariables>;
+export const GetNeighborsDocument = gql`
+    query getNeighbors($cursor: String, $pageSize: Int, $streamPart: String, $node: String, $streamId: String) {
+  neighbors(
+    cursor: $cursor
+    pageSize: $pageSize
+    streamPart: $streamPart
+    node: $node
+    stream: $streamId
+  ) {
+    items {
+      streamPartId
+      nodeId1
+      nodeId2
+      rtt
+    }
+    cursor
+  }
+}
+    `;
+export type GetNeighborsQueryResult = Apollo.QueryResult<GetNeighborsQuery, GetNeighborsQueryVariables>;

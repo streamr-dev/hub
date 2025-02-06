@@ -39,4 +39,28 @@ gql`
             streamCount
         }
     }
+
+    query getNeighbors(
+        $cursor: String
+        $pageSize: Int
+        $streamPart: String
+        $node: String
+        $streamId: String
+    ) {
+        neighbors(
+            cursor: $cursor
+            pageSize: $pageSize
+            streamPart: $streamPart
+            node: $node
+            stream: $streamId
+        ) {
+            items {
+                streamPartId
+                nodeId1
+                nodeId2
+                rtt
+            }
+            cursor
+        }
+    }
 `

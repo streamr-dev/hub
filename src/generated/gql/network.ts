@@ -4307,7 +4307,7 @@ export type StreamPermission = {
   /** subscribeExpires timestamp tells until what time this address may subscribe to the stream */
   subscribeExpiration?: Maybe<Scalars['BigInt']['output']>;
   /** [DEPRECATED] Ethereum address, owner of this permission; only if permission granting didn't use *forUserId functions */
-  userAddress?: Maybe<Scalars['Bytes']['output']>;
+  userAddress: Scalars['Bytes']['output'];
   /** Ethereum address or other ID, owner of this permission */
   userId: Scalars['Bytes']['output'];
 };
