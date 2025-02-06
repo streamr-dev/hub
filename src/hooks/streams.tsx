@@ -269,7 +269,10 @@ async function getStreamsFromGraph(
 
     const streams = result.map((s) => {
         const { publisherCount, subscriberCount } = getStatsFromPermissions(
-            s.permissions || [],
+            s.permissions?.map((p) => ({
+                ...p,
+                userAddress: p.userId, // We need to add this deprecated field for now
+            })) || [],
         )
 
         return {

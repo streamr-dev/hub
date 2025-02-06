@@ -25,14 +25,14 @@ export function useMultipleStreamStatsQuery(streamIds: string[]) {
             )) as StreamStats[]
             return stats.reduce(
                 (acc: StreamStats, curr: StreamStats) => ({
-                    // For latency, we can take the average of non-undefined values
-                    latency:
-                        acc.latency === undefined && curr.latency === undefined
-                            ? undefined
-                            : ((acc.latency || 0) + (curr.latency || 0)) /
-                              (acc.latency !== undefined && curr.latency !== undefined
-                                  ? 2
-                                  : 1),
+                    // Take the maximum latency among all streams
+                    latency: Math.max(
+                        acc.latency ?? -Infinity,
+                        curr.latency ?? -Infinity
+                    ) === -Infinity ? undefined : Math.max(
+                        acc.latency ?? -Infinity,
+                        curr.latency ?? -Infinity
+                    ),
                     messagesPerSecond: acc.messagesPerSecond + curr.messagesPerSecond,
                     peerCount: acc.peerCount + curr.peerCount,
                 }),
