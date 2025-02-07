@@ -3,6 +3,7 @@ import React from 'react'
 import { useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { SimpleDropdown, SimpleListDropdownMenu } from '~/components/SimpleDropdown'
+import { defaultChainKey } from '~/consts'
 import { getEnvironmentConfig } from '~/getters/getEnvironmentConfig'
 import UnstyledNetworkIcon from '~/shared/components/NetworkIcon'
 import SvgIcon from '~/shared/components/SvgIcon'
@@ -49,7 +50,7 @@ const Menu = ({ chains, selectedChain, toggle }: MenuProps) => {
                             setSearchParams((prev) => {
                                 const { chain: _, ...rest } = Object.fromEntries(prev)
 
-                                return chainName === 'polygon'
+                                return chainName === defaultChainKey
                                     ? rest
                                     : { ...rest, chain: chainName }
                             })

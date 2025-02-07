@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import config from '~/config/environments.toml'
+import { defaultChainKey } from '~/consts'
 import { getChainConfig } from '~/utils/chains'
 
 const EnvironmentConfig = z
@@ -37,7 +38,7 @@ const EnvironmentConfig = z
 type EnvironmentConfig = z.infer<typeof EnvironmentConfig>
 
 const fallbackEnvironmentConfig: EnvironmentConfig = EnvironmentConfig.parse({
-    availableChains: ['polygon'],
+    availableChains: [defaultChainKey],
 })
 
 const parsedConfig = z
