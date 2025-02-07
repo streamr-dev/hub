@@ -1,14 +1,13 @@
-import { config as configs } from '@streamr/config'
+import { Chain, Config, config as configs } from '@streamr/config'
 import { produce } from 'immer'
 import { useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { ethereumNetworks } from '~/shared/utils/constants'
 import {
     ChainConfigExtension,
     fallbackChainConfigExtension,
     parsedChainConfigExtension,
 } from '~/utils/chainConfigExtension'
-import { Chain } from '~/types'
-import { ethereumNetworks } from '~/shared/utils/constants'
 import formatConfigUrl from './formatConfigUrl'
 
 function getPreferredChainName(chainName: string) {

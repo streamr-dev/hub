@@ -17,7 +17,7 @@ export default function getClientConfig(
     if (chainConfig.entryPoints && chainConfig.entryPoints.length > 0) {
         config.network = {
             controlLayer: {
-                entryPoints: chainConfig.entryPoints,
+                entryPoints: [...chainConfig.entryPoints],
             },
         }
     }

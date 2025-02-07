@@ -1,3 +1,4 @@
+import { Chain } from '@streamr/config'
 import React from 'react'
 import { useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -5,10 +6,9 @@ import { SimpleDropdown, SimpleListDropdownMenu } from '~/components/SimpleDropd
 import { getEnvironmentConfig } from '~/getters/getEnvironmentConfig'
 import UnstyledNetworkIcon from '~/shared/components/NetworkIcon'
 import SvgIcon from '~/shared/components/SvgIcon'
-import { getSymbolicChainName, useCurrentChain } from '~/utils/chains'
 import { COLORS, LAPTOP } from '~/shared/utils/styled'
 import { StreamDraft } from '~/stores/streamDraft'
-import { Chain } from '~/types'
+import { getSymbolicChainName, useCurrentChain } from '~/utils/chains'
 
 type MenuItemProps = {
     chain: Chain
