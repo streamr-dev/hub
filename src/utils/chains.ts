@@ -1,4 +1,4 @@
-import { Chain, Config, config as configs } from '@streamr/config'
+import { Chain, config as configs } from '@streamr/config'
 import { produce } from 'immer'
 import { useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
