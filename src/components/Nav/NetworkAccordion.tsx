@@ -80,7 +80,7 @@ const Title = styled.p`
 
 const Subtitle = styled.p`
     font-size: 16px;
-    font-weight ${REGULAR};
+    font-weight: ${REGULAR};
     color: ${COLORS.primaryLight};
     margin: 0;
     max-width: 350px;
