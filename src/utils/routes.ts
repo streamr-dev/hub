@@ -1,5 +1,7 @@
+import { ChainKey } from '@streamr/config'
 import queryString from 'query-string'
 import { defaultChainKey } from '~/consts'
+import { parsedChainConfigExtension } from '~/utils/chainConfigExtension'
 import { getChainKey } from './chains'
 
 interface RouteOptions {
@@ -8,14 +10,19 @@ interface RouteOptions {
 }
 
 export function routeOptions(
-    chain: string | number,
+    chainIdOrChainKey: ChainKey | number,
     search: Record<string, any> = {},
     hash = '',
 ): RouteOptions {
+    const chain =
+        typeof chainIdOrChainKey === 'number'
+            ? getChainKey(chainIdOrChainKey)
+            : parsedChainConfigExtension[chainIdOrChainKey]?.slug || chainIdOrChainKey
+
     return {
         search: {
             ...search,
-            chain: typeof chain === 'string' ? chain : getChainKey(chain),
+            chain,
         },
         hash,
     }

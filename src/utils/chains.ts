@@ -1,4 +1,4 @@
-import { Chain, config as configs } from '@streamr/config'
+import { Chain, ChainKey, config as configs } from '@streamr/config'
 import { produce } from 'immer'
 import { useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -11,24 +11,64 @@ import {
 } from '~/utils/chainConfigExtension'
 import formatConfigUrl from './formatConfigUrl'
 
-function getPreferredChainName(chainName: string) {
-    if (/amoy/i.test(chainName)) {
-        return 'amoy'
+const lowerCasedChainKeyToChainKeyMap: Record<string, ChainKey | null | undefined> = {}
+
+/**
+ * @param candidate Chain key or chain slug (from config extension) or chain number. Defaults
+ * to the default chain key (currently 'polygon').
+ */
+export function getChainKey(candidate: string | number): ChainKey {
+    const key = typeof candidate === 'number' ? candidate : candidate.toLowerCase()
+
+    if (lowerCasedChainKeyToChainKeyMap[key] === null) {
+        return defaultChainKey
     }
 
-    return chainName.toLowerCase()
-}
+    if (lowerCasedChainKeyToChainKeyMap[key]) {
+        return lowerCasedChainKeyToChainKeyMap[key]
+    }
 
-function getChainConfigWithFallback(chainName: string): Chain {
-    try {
-        return getChainConfig(chainName)
-    } catch (_) {}
+    for (const chainKey in configs) {
+        if (!isChainKey(chainKey)) {
+            continue
+        }
 
-    return getChainConfig(defaultChainKey)
+        if (typeof key === 'number') {
+            if (configs[chainKey].id === key) {
+                lowerCasedChainKeyToChainKeyMap[key] = chainKey
+
+                return chainKey
+            }
+
+            continue
+        }
+
+        if (chainKey.toLowerCase() === key) {
+            lowerCasedChainKeyToChainKeyMap[key] = chainKey
+
+            return chainKey
+        }
+
+        const slug = parsedChainConfigExtension[chainKey]?.slug?.toLowerCase()
+
+        if (key === slug) {
+            lowerCasedChainKeyToChainKeyMap[key] = chainKey
+
+            return chainKey
+        }
+    }
+
+    console.warn(
+        `Could not find a proper chain key for "${candidate}". Using default key (${defaultChainKey}).`,
+    )
+
+    lowerCasedChainKeyToChainKeyMap[key] = null
+
+    return defaultChainKey
 }
 
 export function getCurrentChain() {
-    return getChainConfigWithFallback(
+    return getChainConfig(
         new URLSearchParams(window.location.search).get('chain') || defaultChainKey,
     )
 }
@@ -40,7 +80,7 @@ export function getCurrentChainId() {
 export function useCurrentChain() {
     const chainName = useSearchParams()[0].get('chain') || defaultChainKey
 
-    return useMemo(() => getChainConfigWithFallback(chainName), [chainName])
+    return useMemo(() => getChainConfig(chainName), [chainName])
 }
 
 export function useCurrentChainId() {
@@ -61,95 +101,69 @@ export function useCurrentChainFullName() {
 interface ChainEntry {
     config: Chain
     configExtension: ChainConfigExtension
-    chainKey: string
+    chainKey: ChainKey
 }
 
-const chainEntriesByIdOrName: Partial<Record<string | number, ChainEntry | null>> = {}
+const chainEntriesByIdOrName: Partial<Record<ChainKey, ChainEntry | null>> = {}
 
-function getChainEntry(chainIdOrName: string | number) {
-    const key =
-        typeof chainIdOrName === 'string'
-            ? getPreferredChainName(chainIdOrName)
-            : chainIdOrName
+function getChainEntry(chainKey: ChainKey): ChainEntry {
+    if (chainEntriesByIdOrName[chainKey]) {
+        return chainEntriesByIdOrName[chainKey]
+    }
 
-    let entry = chainEntriesByIdOrName[key]
+    const config: Chain = configs[chainKey]
 
-    if (typeof entry === 'undefined') {
-        entry = (() => {
-            const source = Object.entries<Chain>(configs).find(([chainKey, config]) =>
-                typeof chainIdOrName === 'string'
-                    ? getPreferredChainName(chainIdOrName) ===
-                      getPreferredChainName(chainKey)
-                    : chainIdOrName === config.id,
-            )
+    const configExtension =
+        parsedChainConfigExtension[chainKey] || fallbackChainConfigExtension
 
-            if (!source) {
-                return null
-            }
+    const { dockerHost } = configExtension
 
-            const [rawChainKey, config] = source
+    const sanitizedConfig = produce(config, (draft) => {
+        draft.name = ethereumNetworks[config.id] || config.name
 
-            const chainKey = getPreferredChainName(rawChainKey)
-
-            const configExtension =
-                parsedChainConfigExtension[chainKey] || fallbackChainConfigExtension
-
-            const { dockerHost } = configExtension
-
-            const sanitizedConfig = produce(config, (draft) => {
-                draft.name = ethereumNetworks[config.id] || config.name
-
-                for (const rpc of draft.rpcEndpoints) {
-                    rpc.url = formatConfigUrl(rpc.url, {
-                        dockerHost,
-                    })
-                }
-
-                if (draft.entryPoints) {
-                    for (const entrypoint of draft.entryPoints) {
-                        entrypoint.websocket.host = formatConfigUrl(
-                            entrypoint.websocket.host,
-                            {
-                                dockerHost,
-                            },
-                        )
-                    }
-                }
-
-                if (draft.theGraphUrl) {
-                    draft.theGraphUrl = formatConfigUrl(draft.theGraphUrl, { dockerHost })
-                }
+        for (const rpc of draft.rpcEndpoints) {
+            rpc.url = formatConfigUrl(rpc.url, {
+                dockerHost,
             })
+        }
 
-            return {
-                chainKey,
-                config: sanitizedConfig,
-                configExtension,
+        if (draft.entryPoints) {
+            for (const entrypoint of draft.entryPoints) {
+                entrypoint.websocket.host = formatConfigUrl(entrypoint.websocket.host, {
+                    dockerHost,
+                })
             }
-        })()
+        }
 
-        chainEntriesByIdOrName[key] = entry
+        if (draft.theGraphUrl) {
+            draft.theGraphUrl = formatConfigUrl(draft.theGraphUrl, { dockerHost })
+        }
+    })
+
+    const entry: ChainEntry = {
+        chainKey,
+        config: sanitizedConfig,
+        configExtension,
     }
 
-    if (!entry) {
-        throw new Error(
-            `Could not find config for "${chainIdOrName}" (${
-                typeof chainIdOrName === 'string' ? 'chain name' : 'chain id'
-            })`,
-        )
-    }
+    chainEntriesByIdOrName[chainKey] = entry
 
     return entry
 }
 
 export function getChainConfig(chainIdOrChainKey: string | number): Chain {
-    return getChainEntry(chainIdOrChainKey).config
+    return getChainEntry(getChainKey(chainIdOrChainKey)).config
 }
 
-export function getChainKey(chainId: number) {
-    return getChainEntry(chainId).chainKey
+export function getChainConfigExtension(chainId: number): ChainConfigExtension {
+    return getChainEntry(getChainKey(chainId)).configExtension
 }
 
-export function getChainConfigExtension(chainId: number) {
-    return getChainEntry(chainId).configExtension
+/**
+ * Checks if a given string is a `ChainKey`.
+ * @param candidate Any string.
+ * @returns `true` if the given string is config's own key.
+ */
+function isChainKey(candidate: string): candidate is ChainKey {
+    return Object.prototype.hasOwnProperty.call(configs, candidate)
 }

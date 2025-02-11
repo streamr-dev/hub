@@ -32,6 +32,7 @@ const ChainConfigExtension = z.object({
         }),
     marketplaceChains: z.array(z.string()).optional().default([]),
     networkSubgraphUrl: z.string().optional(),
+    slug: z.string().optional(),
     sponsorshipPaymentToken: z.string().optional().default('DATA'),
     storageNodes: z
         .array(

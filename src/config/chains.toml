@@ -22,6 +22,7 @@ name = "streamr-dev/dataunion"
 [polygonAmoy]
 dataUnionJoinServerUrl = "https://join.dataunions.org/"
 marketplaceChains = ['polygonAmoy']
+slug = 'amoy'
 
 [[polygonAmoy.storageNodes]]
 name = "Streamr Germany"
