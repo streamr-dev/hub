@@ -9,7 +9,7 @@ import UnstyledNetworkIcon from '~/shared/components/NetworkIcon'
 import SvgIcon from '~/shared/components/SvgIcon'
 import { COLORS, LAPTOP } from '~/shared/utils/styled'
 import { StreamDraft } from '~/stores/streamDraft'
-import { getChainKey, useCurrentChain } from '~/utils/chains'
+import { getChainSlug, useCurrentChain } from '~/utils/chains'
 
 type MenuItemProps = {
     chain: Chain
@@ -45,14 +45,14 @@ const Menu = ({ chains, selectedChain, toggle }: MenuProps) => {
                         onClick={() => {
                             toggle(false)
 
-                            const chainKey = getChainKey(c.id)
+                            const slug = getChainSlug(c.id)
 
                             setSearchParams((prev) => {
                                 const { chain: _, ...rest } = Object.fromEntries(prev)
 
-                                return chainKey === defaultChainKey
+                                return slug === getChainSlug(defaultChainKey)
                                     ? rest
-                                    : { ...rest, chain: chainKey }
+                                    : { ...rest, chain: slug }
                             })
                         }}
                     />

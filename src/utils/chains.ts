@@ -159,6 +159,12 @@ export function getChainConfigExtension(chainId: number): ChainConfigExtension {
     return getChainEntry(getChainKey(chainId)).configExtension
 }
 
+export function getChainSlug(chainIdOrChainKey: ChainKey | number): string {
+    const chainEntry = getChainEntry(getChainKey(chainIdOrChainKey))
+
+    return chainEntry.configExtension.slug || chainEntry.chainKey
+}
+
 /**
  * Checks if a given string is a `ChainKey`.
  * @param candidate Any string.
