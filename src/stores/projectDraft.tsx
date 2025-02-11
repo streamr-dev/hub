@@ -278,7 +278,7 @@ export function usePersistProjectCallback() {
 
     const navigate = useNavigate()
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return useCallback(() => {
         persist({
@@ -287,7 +287,7 @@ export function usePersistProjectCallback() {
                     return
                 }
 
-                navigate(R.projects(routeOptions(chainName)))
+                navigate(R.projects(routeOptions(chainKey)))
             },
 
             onError(e) {
@@ -298,5 +298,5 @@ export function usePersistProjectCallback() {
                 console.warn('Failed to publish', e)
             },
         })
-    }, [persist, navigate, chainName])
+    }, [persist, navigate, chainKey])
 }

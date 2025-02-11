@@ -73,11 +73,11 @@ export function SponsorshipActionBar({ sponsorship }: SponsorshipActionBarProps)
 
     const chainId = useCurrentChainId()
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return (
         <AbstractActionBar
-            fallbackBackButtonUrl={R.sponsorships(routeOptions(chainName))}
+            fallbackBackButtonUrl={R.sponsorships(routeOptions(chainKey))}
             title={
                 streamId ? (
                     truncateStreamName(streamId, 30)

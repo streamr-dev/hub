@@ -193,12 +193,12 @@ function MarketplaceProductTile({
 }: MarketplaceProductTileProps) {
     const chainId = useCurrentChainId()
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return (
         <Tile {...props}>
             <TileImageContainer>
-                <Link to={R.projectOverview(product.id, routeOptions(chainName))}>
+                <Link to={R.projectOverview(product.id, routeOptions(chainKey))}>
                     <TileImageContainer autoSize>
                         <TileThumbnail
                             src={
@@ -218,17 +218,17 @@ function MarketplaceProductTile({
                         right
                         linkTo={R.projectOverview(
                             product.id,
-                            routeOptions(chainName, undefined, 'stats'),
+                            routeOptions(chainKey, undefined, 'stats'),
                         )}
                     />
                 )}
                 {showEditButton && (
-                    <EditButton to={R.projectEdit(product.id, routeOptions(chainName))}>
+                    <EditButton to={R.projectEdit(product.id, routeOptions(chainKey))}>
                         <SvgIcon name={'pencilFull'} />
                     </EditButton>
                 )}
             </TileImageContainer>
-            <Link to={R.projectOverview(product.id, routeOptions(chainName))}>
+            <Link to={R.projectOverview(product.id, routeOptions(chainKey))}>
                 <Summary
                     name={
                         (product.metadata && product.metadata.name) || 'Untitled project'

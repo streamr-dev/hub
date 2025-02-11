@@ -360,7 +360,7 @@ function Header({
 
     const ready = !!entity
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return (
         <>
@@ -370,7 +370,7 @@ function Header({
                 }
             />
             <DetailsPageHeader
-                backButtonLink={R.streams(routeOptions(chainName))}
+                backButtonLink={R.streams(routeOptions(chainKey))}
                 pageTitle={
                     <TitleContainer>
                         <span title={streamId}>
@@ -393,7 +393,7 @@ function Header({
                             <Tab
                                 id="overview"
                                 tag={Link}
-                                to={R.streamOverview(streamId, routeOptions(chainName))}
+                                to={R.streamOverview(streamId, routeOptions(chainKey))}
                                 selected={location.pathname.startsWith(
                                     R.streamOverview(streamId),
                                 )}
@@ -404,7 +404,7 @@ function Header({
                             <Tab
                                 id="connect"
                                 tag={Link}
-                                to={R.streamConnect(streamId, routeOptions(chainName))}
+                                to={R.streamConnect(streamId, routeOptions(chainKey))}
                                 selected={location.pathname.startsWith(
                                     R.streamConnect(streamId),
                                 )}
@@ -414,7 +414,7 @@ function Header({
                             <Tab
                                 id="liveData"
                                 tag={Link}
-                                to={R.streamLiveData(streamId, routeOptions(chainName))}
+                                to={R.streamLiveData(streamId, routeOptions(chainKey))}
                                 selected={location.pathname.startsWith(
                                     R.streamLiveData(streamId),
                                 )}

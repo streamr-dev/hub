@@ -176,15 +176,15 @@ export const ProjectTypeChooser: FunctionComponent<{
 }> = ({ className, onClose }) => {
     const [selectedProductType, setSelectedProductType] = useState<ProjectType>()
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     const link = useMemo<string | null>(() => {
         if (!selectedProductType) {
             return null
         }
 
-        return R.project('new', routeOptions(chainName, { type: selectedProductType }))
-    }, [selectedProductType, chainName])
+        return R.project('new', routeOptions(chainKey, { type: selectedProductType }))
+    }, [selectedProductType, chainKey])
 
     const gotAnyStreams = useGotAnyStreams()
 
@@ -268,7 +268,7 @@ export const ProjectTypeChooser: FunctionComponent<{
             {gotAnyStreams === false && (
                 <NoStreamsWarningBox>
                     You have not created any streams yet. Please{' '}
-                    <Link onClick={onClose} to={R.stream('new', routeOptions(chainName))}>
+                    <Link onClick={onClose} to={R.stream('new', routeOptions(chainKey))}>
                         create a stream
                     </Link>{' '}
                     to get started. For help creating streams, see the{' '}

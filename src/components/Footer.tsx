@@ -30,7 +30,7 @@ const FooterColumns = styled(UnstyledFooterColumns)`
 `
 
 const Footer = ({ topBorder = false }) => {
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return (
         <LayoutFooter>
@@ -56,7 +56,7 @@ const Footer = ({ topBorder = false }) => {
                 </FooterColumn>
                 <FooterColumn title="Apps">
                     <a href={R.networkExplorer()}>Network Explorer</a>
-                    <a href={R.hub(routeOptions(chainName))}>Hub</a>
+                    <a href={R.hub(routeOptions(chainKey))}>Hub</a>
                 </FooterColumn>
                 <FooterColumn title="Contact">
                     <a href={R.contactGeneral()}>General</a>

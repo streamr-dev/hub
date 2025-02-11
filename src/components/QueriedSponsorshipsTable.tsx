@@ -53,7 +53,7 @@ export function QueriedSponsorshipsTable({
 
     const chainId = useCurrentChainId()
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     const fundSponsorship = useFundSponsorshipCallback()
 
@@ -223,7 +223,7 @@ export function QueriedSponsorshipsTable({
                 noDataFirstLine={noDataFirstLine}
                 noDataSecondLine={noDataSecondLine}
                 linkMapper={(element) =>
-                    R.sponsorship(element.id, routeOptions(chainName))
+                    R.sponsorship(element.id, routeOptions(chainKey))
                 }
             />
             {query.hasNextPage && (

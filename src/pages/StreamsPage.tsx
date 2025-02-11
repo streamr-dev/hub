@@ -48,7 +48,7 @@ export function StreamsPage() {
 
     const account = useWalletAccount()
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     useEffect(
         function changeToAllTabOnWalletLock() {
@@ -56,9 +56,9 @@ export function StreamsPage() {
                 return
             }
 
-            navigate(R.streams(routeOptions(chainName, { tab: StreamsTabOption.All })))
+            navigate(R.streams(routeOptions(chainKey, { tab: StreamsTabOption.All })))
         },
-        [account, navigate, chainName],
+        [account, navigate, chainKey],
     )
 
     const {
@@ -130,7 +130,7 @@ export function StreamsPage() {
                             fullWidthOnMobile
                             selection={tab}
                             onSelectionChange={(id) => {
-                                navigate(R.streams(routeOptions(chainName, { tab: id })))
+                                navigate(R.streams(routeOptions(chainKey, { tab: id })))
                             }}
                         >
                             <Tab id={StreamsTabOption.All}>All streams</Tab>
@@ -148,7 +148,7 @@ export function StreamsPage() {
                         </Tabs>
                     </FiltersWrap>
                     <CreateStreamButtonWrap>
-                        <Button as={Link} to={R.stream('new', routeOptions(chainName))}>
+                        <Button as={Link} to={R.stream('new', routeOptions(chainKey))}>
                             Create stream
                         </Button>
                     </CreateStreamButtonWrap>

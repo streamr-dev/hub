@@ -593,7 +593,7 @@ const NewStreamLink = styled(Link)`
 
 function getOpenStreamLink(streamId: string) {
     return function OpenStreamLink() {
-        const chainName = useCurrentChainKey()
+        const chainKey = useCurrentChainKey()
 
         const id: string = decodeURIComponent(
             useMatch(R.streamOverview(':id'))?.params['id'] || '',
@@ -604,7 +604,7 @@ function getOpenStreamLink(streamId: string) {
         }
 
         return (
-            <NewStreamLink to={R.streamOverview(streamId, routeOptions(chainName))}>
+            <NewStreamLink to={R.streamOverview(streamId, routeOptions(chainKey))}>
                 Open
             </NewStreamLink>
         )

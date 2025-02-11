@@ -125,7 +125,7 @@ export const OperatorPage = () => {
 
     const currentChainId = useCurrentChainId()
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     const earliestUndelegationTimestamp = operator?.delegations.find(
         (d) => d.delegator.toLowerCase() === walletAddress?.toLowerCase(),
@@ -579,7 +579,7 @@ export const OperatorPage = () => {
                                         },
                                     ]}
                                     linkMapper={({ sponsorshipId: id }) =>
-                                        R.sponsorship(id, routeOptions(chainName))
+                                        R.sponsorship(id, routeOptions(chainKey))
                                     }
                                 />
                             </SlashingHistoryTableContainer>

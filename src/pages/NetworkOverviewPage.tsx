@@ -270,7 +270,7 @@ function MyOperatorSummary() {
 
     const chartLabel = chartId === 'stake' ? 'Total stake' : 'Cumulative earnings'
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return (
         <NetworkPageSegment
@@ -281,7 +281,7 @@ function MyOperatorSummary() {
                             <Button
                                 kind="secondary"
                                 as={Link}
-                                to={R.operator(operator.id, routeOptions(chainName))}
+                                to={R.operator(operator.id, routeOptions(chainKey))}
                             >
                                 View Operator
                             </Button>
@@ -355,7 +355,7 @@ function MyOperatorSummary() {
                                 secondLine={
                                     <>
                                         You can become an operator on the{' '}
-                                        <Link to={R.operators(routeOptions(chainName))}>
+                                        <Link to={R.operators(routeOptions(chainKey))}>
                                             Operators
                                         </Link>{' '}
                                         page.
@@ -498,7 +498,7 @@ function MyDelegations() {
             .flatMap((page) => page.elements)
             .filter((d) => d.contractVersion !== 1) || []
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return (
         <NetworkPageSegment title="My delegations" foot>
@@ -575,7 +575,7 @@ function MyDelegations() {
                                 },
                             ]}
                             linkMapper={({ id }) =>
-                                R.operator(id, routeOptions(chainName))
+                                R.operator(id, routeOptions(chainKey))
                             }
                         />
                         {query.hasNextPage ? (
@@ -596,7 +596,7 @@ function MyDelegations() {
                         secondLine={
                             <>
                                 You can browse{' '}
-                                <Link to={R.operators(routeOptions(chainName))}>
+                                <Link to={R.operators(routeOptions(chainKey))}>
                                     operators
                                 </Link>{' '}
                                 to start delegating.
@@ -613,7 +613,7 @@ function MyDelegations() {
 function MySponsorships() {
     const query = useSponsorshipsForCreatorQuery(useWalletAccount())
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return (
         <NetworkPageSegment title="My sponsorships" foot>
@@ -624,7 +624,7 @@ function MySponsorships() {
                     noDataSecondLine={
                         <>
                             You can{' '}
-                            <Link to={R.sponsorships(routeOptions(chainName))}>
+                            <Link to={R.sponsorships(routeOptions(chainKey))}>
                                 start a sponsorship
                             </Link>{' '}
                             here

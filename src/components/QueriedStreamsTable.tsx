@@ -42,7 +42,7 @@ export function QueriedStreamsTable({
 
     const chainId = useCurrentChainId()
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     const indexerQueryErrored = query.isError && isIndexerColumn(chainId, orderBy)
 
@@ -141,7 +141,7 @@ export function QueriedStreamsTable({
                         valueMapper: ({ subscriberCount = '∞' }) => subscriberCount,
                     },
                 ]}
-                linkMapper={(element) => R.stream(element.id, routeOptions(chainName))}
+                linkMapper={(element) => R.stream(element.id, routeOptions(chainKey))}
             />
             {query.hasNextPage && (
                 <LoadMoreButton

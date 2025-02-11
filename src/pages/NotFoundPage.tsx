@@ -18,7 +18,7 @@ export default function NotFoundPage() {
 }
 
 export function NotFoundPageContent() {
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     const fullChainName = useCurrentChainFullName()
 
@@ -37,14 +37,14 @@ export function NotFoundPageContent() {
                         <Button
                             kind="special"
                             as={Link}
-                            to={R.streams(routeOptions(chainName))}
+                            to={R.streams(routeOptions(chainKey))}
                         >
                             Go to streams
                         </Button>
                         <Button
                             kind="special"
                             as={Link}
-                            to={R.projects(routeOptions(chainName))}
+                            to={R.projects(routeOptions(chainKey))}
                         >
                             Go to projects
                         </Button>

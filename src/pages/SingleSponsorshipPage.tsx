@@ -145,7 +145,7 @@ export const SingleSponsorshipPage = () => {
         <NoData firstLine={`Sponsorship not found on the ${fullChainName} chain.`} />
     ) : null
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     const rawFundingEvents = fundingEventsQuery.data?.pages || EmptyArray
 
@@ -266,7 +266,7 @@ export const SingleSponsorshipPage = () => {
                                                 <Link
                                                     to={R.operator(
                                                         stake.operatorId,
-                                                        routeOptions(chainName),
+                                                        routeOptions(chainKey),
                                                     )}
                                                 >
                                                     <div>

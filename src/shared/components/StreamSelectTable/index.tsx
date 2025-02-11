@@ -240,7 +240,7 @@ export const StreamSelectTable: FunctionComponent<Props> = ({
         }
     }, [selected])
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return (
         <div>
@@ -267,7 +267,7 @@ export const StreamSelectTable: FunctionComponent<Props> = ({
                         return (
                             <TableRow key={s.id}>
                                 <StreamDetails
-                                    to={R.stream(s.id, routeOptions(chainName))}
+                                    to={R.stream(s.id, routeOptions(chainKey))}
                                 >
                                     <StreamId title={s.id}>
                                         {truncateStreamName(s.id, 40)}

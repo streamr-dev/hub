@@ -45,7 +45,7 @@ export function AccessManifest({
 
     const { pricePerSecond, chainId, pricingTokenAddress } = firstSalePoint
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return (
         <Root>
@@ -78,7 +78,7 @@ export function AccessManifest({
             {hasAccess === true && (
                 <Button
                     as={Link}
-                    to={R.projectConnect(projectId, routeOptions(chainName))}
+                    to={R.projectConnect(projectId, routeOptions(chainKey))}
                 >
                     Connect
                 </Button>

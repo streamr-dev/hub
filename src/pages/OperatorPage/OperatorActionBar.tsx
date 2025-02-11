@@ -43,7 +43,7 @@ export function OperatorActionBar({ operator }: OperatorActionBarProps) {
 
     const currentChainId = useCurrentChainId()
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     const canUndelegateQuery = useQuery({
         queryKey: [
@@ -94,7 +94,7 @@ export function OperatorActionBar({ operator }: OperatorActionBarProps) {
                 <OuterWrap>
                     <Wrap0>
                         <NetworkActionBarBackLink
-                            to={R.operators(routeOptions(chainName))}
+                            to={R.operators(routeOptions(chainKey))}
                             onClick={(e) => {
                                 goBack({
                                     onBeforeNavigate() {

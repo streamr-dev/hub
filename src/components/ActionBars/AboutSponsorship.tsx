@@ -24,7 +24,7 @@ interface AboutSponsorshipProps {
 export function AboutSponsorship({ sponsorship }: AboutSponsorshipProps) {
     const { streamId } = sponsorship
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return (
         <DefaultSimpleDropdownMenu>
@@ -35,7 +35,7 @@ export function AboutSponsorship({ sponsorship }: AboutSponsorshipProps) {
                         <strong>{truncateStreamName(streamId)}</strong>
                         <div>
                             <Link
-                                to={R.stream(streamId, routeOptions(chainName))}
+                                to={R.stream(streamId, routeOptions(chainKey))}
                                 target="_blank"
                             >
                                 <ExternalLinkIcon />

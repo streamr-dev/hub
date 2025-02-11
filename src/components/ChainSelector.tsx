@@ -45,14 +45,14 @@ const Menu = ({ chains, selectedChain, toggle }: MenuProps) => {
                         onClick={() => {
                             toggle(false)
 
-                            const chainName = getChainKey(c.id)
+                            const chainKey = getChainKey(c.id)
 
                             setSearchParams((prev) => {
                                 const { chain: _, ...rest } = Object.fromEntries(prev)
 
-                                return chainName === defaultChainKey
+                                return chainKey === defaultChainKey
                                     ? rest
-                                    : { ...rest, chain: chainName }
+                                    : { ...rest, chain: chainKey }
                             })
                         }}
                     />

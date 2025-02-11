@@ -97,7 +97,7 @@ export const OperatorsPage = () => {
 
     const chainId = useCurrentChainId()
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     const operatorQuery = useOperatorForWalletQuery(wallet)
 
@@ -112,13 +112,13 @@ export const OperatorsPage = () => {
         if (!wallet && !isWalletLoading) {
             navigate(
                 R.operators(
-                    routeOptions(chainName, {
+                    routeOptions(chainKey, {
                         tab: TabOption.AllOperators,
                     }),
                 ),
             )
         }
-    }, [wallet, isWalletLoading, navigate, chainName])
+    }, [wallet, isWalletLoading, navigate, chainKey])
 
     return (
         <Layout>
@@ -130,7 +130,7 @@ export const OperatorsPage = () => {
                 leftSideContent={
                     <Tabs
                         onSelectionChange={(value) => {
-                            navigate(R.operators(routeOptions(chainName, { tab: value })))
+                            navigate(R.operators(routeOptions(chainKey, { tab: value })))
                         }}
                         selection={selectedTab}
                         fullWidthOnMobile={true}
@@ -145,7 +145,7 @@ export const OperatorsPage = () => {
                     operator ? (
                         <Button
                             as={Link}
-                            to={R.operator(operator.id, routeOptions(chainName))}
+                            to={R.operator(operator.id, routeOptions(chainKey))}
                         >
                             View my Operator
                         </Button>
@@ -226,7 +226,7 @@ function DelegationsTable({
             .flatMap((page) => page.elements)
             .filter((d) => d.contractVersion !== 1) || []
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     const chainFullName = useCurrentChainFullName()
 
@@ -294,7 +294,7 @@ function DelegationsTable({
                 },
             ]}
             noDataFirstLine={`You have not delegated to any operator on the ${chainFullName} chain.`}
-            linkMapper={(element) => R.operator(element.id, routeOptions(chainName))}
+            linkMapper={(element) => R.operator(element.id, routeOptions(chainKey))}
         />
     )
 }
@@ -312,7 +312,7 @@ function OperatorsTable({
 }) {
     const elements = query.data?.pages.flatMap((page) => page.elements) || []
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     const chainFullName = useCurrentChainFullName()
 
@@ -385,7 +385,7 @@ function OperatorsTable({
                 },
             ]}
             noDataFirstLine={`No operators found on the ${chainFullName} chain.`}
-            linkMapper={(element) => R.operator(element.id, routeOptions(chainName))}
+            linkMapper={(element) => R.operator(element.id, routeOptions(chainKey))}
         />
     )
 }

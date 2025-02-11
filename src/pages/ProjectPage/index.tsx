@@ -295,12 +295,12 @@ export function ProjectTabbedPage() {
 
     const canEdit = useCurrentProjectAbility(ProjectPermission.Edit)
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return (
         <Layout pageTitle={name}>
             <DetailsPageHeader
-                backButtonLink={R.projects(routeOptions(chainName))}
+                backButtonLink={R.projects(routeOptions(chainKey))}
                 pageTitle={
                     <PageTitleContainer>
                         <ProjectTitle>
@@ -315,7 +315,7 @@ export function ProjectTabbedPage() {
                         {canEdit && (
                             <EditButton
                                 as={Link}
-                                to={R.projectEdit(id, routeOptions(chainName))}
+                                to={R.projectEdit(id, routeOptions(chainKey))}
                                 kind="secondary"
                                 size="mini"
                             >

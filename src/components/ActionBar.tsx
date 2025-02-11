@@ -73,7 +73,7 @@ const UnstyledActionBar = ({
 
     const navigate = useNavigate()
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return (
         <ActionBarContainer {...props}>
@@ -93,7 +93,7 @@ const UnstyledActionBar = ({
                     <Tabs
                         selection={scope}
                         onSelectionChange={(id) => {
-                            navigate(R.projects(routeOptions(chainName, { tab: id })))
+                            navigate(R.projects(routeOptions(chainKey, { tab: id })))
                         }}
                     >
                         <Tab id={TabOption.Any}>All projects</Tab>

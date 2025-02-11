@@ -55,7 +55,7 @@ const UnstyledDesktopNav: FunctionComponent = (props) => {
 
     const chainId = useCurrentChainId()
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return (
         <div {...props} data-testid={'desktop-nav'}>
@@ -70,14 +70,14 @@ const UnstyledDesktopNav: FunctionComponent = (props) => {
                     <div />
                     <NavbarItem>
                         <NavbarLinkDesktop highlight={pathname.startsWith(R.projects())}>
-                            <NavLink as={Link} to={R.projects(routeOptions(chainName))}>
+                            <NavLink as={Link} to={R.projects(routeOptions(chainKey))}>
                                 Projects
                             </NavLink>
                         </NavbarLinkDesktop>
                     </NavbarItem>
                     <NavbarItem>
                         <NavbarLinkDesktop highlight={pathname.startsWith(R.streams())}>
-                            <NavLink as={Link} to={R.streams(routeOptions(chainName))}>
+                            <NavLink as={Link} to={R.streams(routeOptions(chainKey))}>
                                 Streams
                             </NavLink>
                         </NavbarLinkDesktop>
@@ -137,7 +137,7 @@ const UnstyledDesktopNav: FunctionComponent = (props) => {
                                                         navigate(
                                                             R.operator(
                                                                 operator.id,
-                                                                routeOptions(chainName),
+                                                                routeOptions(chainKey),
                                                             ),
                                                         )
                                                     }}
@@ -201,7 +201,7 @@ const UnstyledMobileNav: FunctionComponent<{ className?: string }> = ({ classNam
 
     const { pathname } = useLocation()
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return (
         <NavOverlay className={className}>
@@ -225,12 +225,12 @@ const UnstyledMobileNav: FunctionComponent<{ className?: string }> = ({ classNam
                     </UserInfoMobile>
                 )}
                 <NavbarLinkMobile highlight={pathname.startsWith(R.projects())}>
-                    <NavLink as={Link} to={R.projects(routeOptions(chainName))}>
+                    <NavLink as={Link} to={R.projects(routeOptions(chainKey))}>
                         Projects
                     </NavLink>
                 </NavbarLinkMobile>
                 <NavbarLinkMobile highlight={pathname.startsWith(R.streams())}>
-                    <NavLink as={Link} to={R.streams(routeOptions(chainName))}>
+                    <NavLink as={Link} to={R.streams(routeOptions(chainKey))}>
                         Streams
                     </NavLink>
                 </NavbarLinkMobile>

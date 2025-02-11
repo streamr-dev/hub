@@ -39,7 +39,7 @@ export function Dropdown() {
         }, 250)
     }
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return (
         <NavbarLinkDesktop highlight={isOpen || isNetworkTabActive(pathname)}>
@@ -54,7 +54,7 @@ export function Dropdown() {
                             <DropdownItem
                                 $active={pathname.startsWith(i.linkFn())}
                                 key={i.title}
-                                to={i.linkFn(routeOptions(chainName))}
+                                to={i.linkFn(routeOptions(chainKey))}
                                 onFocus={() => void show(toggle)}
                                 onClick={() => void hide(toggle, { immediately: true })}
                             >
@@ -68,7 +68,7 @@ export function Dropdown() {
                 {(toggle) => (
                     <NavLink
                         as={Link}
-                        to={R.networkOverview(routeOptions(chainName))}
+                        to={R.networkOverview(routeOptions(chainKey))}
                         onFocus={() => void show(toggle)}
                         onBlur={() => void hide(toggle)}
                         onMouseEnter={() => void show(toggle)}

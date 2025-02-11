@@ -45,7 +45,7 @@ export default function EditorNav() {
 
     const [attach, isSaveButtonVisible] = useInViewport()
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return (
         <NavContainer>
@@ -53,7 +53,7 @@ export default function EditorNav() {
                 <FlexNavbarItem>
                     <Button
                         as={Link}
-                        to={R.projects(routeOptions(chainName))}
+                        to={R.projects(routeOptions(chainKey))}
                         kind="transparent"
                     >
                         Exit
@@ -77,7 +77,7 @@ export default function EditorNav() {
                 <FlexNavbarItem>
                     <Button
                         as={Link}
-                        to={R.projects(routeOptions(chainName))}
+                        to={R.projects(routeOptions(chainKey))}
                         kind="transparent"
                     >
                         Exit

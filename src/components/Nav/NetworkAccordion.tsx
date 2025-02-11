@@ -13,7 +13,7 @@ export function NetworkAccordion() {
 
     const [isOpen, toggle] = useReducer((x) => !x, false)
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     return (
         <>
@@ -23,7 +23,7 @@ export function NetworkAccordion() {
             >
                 <NavLink
                     as={Link}
-                    to={R.networkOverview(routeOptions(chainName))}
+                    to={R.networkOverview(routeOptions(chainKey))}
                     onClick={(e) => {
                         e.preventDefault()
 
@@ -47,7 +47,7 @@ export function NetworkAccordion() {
                         return (
                             <NetworkMobileLink
                                 {...rest}
-                                to={linkFn(routeOptions(chainName))}
+                                to={linkFn(routeOptions(chainKey))}
                                 key={title}
                             >
                                 <NetworkNavElement>

@@ -118,19 +118,19 @@ export const SponsorshipsPage = () => {
 
     const navigate = useNavigate()
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     useEffect(() => {
         if (!wallet && !isWalletLoading) {
             navigate(
                 R.sponsorships(
-                    routeOptions(chainName, {
+                    routeOptions(chainKey, {
                         tab: TabOption.AllSponsorships,
                     }),
                 ),
             )
         }
-    }, [wallet, navigate, chainName, isWalletLoading])
+    }, [wallet, navigate, chainKey, isWalletLoading])
 
     const createSponsorship = useCreateSponsorship()
 
@@ -151,7 +151,7 @@ export const SponsorshipsPage = () => {
                     <Tabs
                         onSelectionChange={(value) => {
                             navigate(
-                                R.sponsorships(routeOptions(chainName, { tab: value })),
+                                R.sponsorships(routeOptions(chainKey, { tab: value })),
                             )
                         }}
                         selection={selectedTab}

@@ -33,7 +33,7 @@ export function SponsorshipTable({
 
     const currentChainId = useCurrentChainId()
 
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
 
     const allSponsorshipIds = operator.stakes.map(({ sponsorshipId }) => sponsorshipId)
 
@@ -125,7 +125,7 @@ export function SponsorshipTable({
                 },
             ]}
             linkMapper={({ sponsorshipId: id }) =>
-                R.sponsorship(id, routeOptions(chainName))
+                R.sponsorship(id, routeOptions(chainKey))
             }
             actions={[
                 (element) => ({

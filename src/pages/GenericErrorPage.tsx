@@ -62,7 +62,8 @@ function ParseErrorPage() {
 }
 
 export function GenericErrorPageContent() {
-    const chainName = useCurrentChainKey()
+    const chainKey = useCurrentChainKey()
+
     return (
         <Root>
             <EmptyState
@@ -77,7 +78,7 @@ export function GenericErrorPageContent() {
                     <Button
                         kind="special"
                         as={Link}
-                        to={R.projects(routeOptions(chainName))}
+                        to={R.projects(routeOptions(chainKey))}
                         className="d-none d-md-flex"
                     >
                         Projects
