@@ -104,11 +104,11 @@ interface ChainEntry {
     chainKey: ChainKey
 }
 
-const chainEntriesByIdOrName: Partial<Record<ChainKey, ChainEntry | null>> = {}
+const chainKeyToChainEntryMap: Partial<Record<ChainKey, ChainEntry | null>> = {}
 
 function getChainEntry(chainKey: ChainKey): ChainEntry {
-    if (chainEntriesByIdOrName[chainKey]) {
-        return chainEntriesByIdOrName[chainKey]
+    if (chainKeyToChainEntryMap[chainKey]) {
+        return chainKeyToChainEntryMap[chainKey]
     }
 
     const config: Chain = configs[chainKey]
@@ -146,7 +146,7 @@ function getChainEntry(chainKey: ChainKey): ChainEntry {
         configExtension,
     }
 
-    chainEntriesByIdOrName[chainKey] = entry
+    chainKeyToChainEntryMap[chainKey] = entry
 
     return entry
 }
