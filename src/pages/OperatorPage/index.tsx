@@ -46,8 +46,8 @@ import { OperatorActionBar } from '~/pages/OperatorPage/OperatorActionBar'
 import { OperatorChecklist } from '~/pages/OperatorPage/OperatorChecklist'
 import { OperatorDetails } from '~/pages/OperatorPage/OperatorDetails'
 import { OperatorSummary } from '~/pages/OperatorPage/OperatorSummary'
-import { UndelegationQueue } from '~/pages/OperatorPage/UndelegationQueue'
 import { SponsorshipTable } from '~/pages/OperatorPage/SponsorshipTable'
+import { UndelegationQueue } from '~/pages/OperatorPage/UndelegationQueue'
 import LoadingIndicator from '~/shared/components/LoadingIndicator'
 import { NoData } from '~/shared/components/NoData'
 import { ScrollTable } from '~/shared/components/ScrollTable/ScrollTable'
@@ -68,7 +68,7 @@ import { toBN, toBigInt, toFloat } from '~/utils/bn'
 import {
     useCurrentChainFullName,
     useCurrentChainId,
-    useCurrentChainSymbolicName,
+    useCurrentChainKey,
 } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
 import { errorToast } from '~/utils/toast'
@@ -125,7 +125,7 @@ export const OperatorPage = () => {
 
     const currentChainId = useCurrentChainId()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     const earliestUndelegationTimestamp = operator?.delegations.find(
         (d) => d.delegator.toLowerCase() === walletAddress?.toLowerCase(),

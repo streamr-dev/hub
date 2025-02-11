@@ -1,15 +1,15 @@
+import {
+    FooterColumn,
+    SocialChannels,
+    FooterColumns as UnstyledFooterColumns,
+    Footer as UnstyledLayoutFooter,
+    MadeBy as UnstyledMadeBy,
+} from '@streamr/streamr-layout'
 import React from 'react'
 import styled from 'styled-components'
-import {
-    Footer as UnstyledLayoutFooter,
-    FooterColumn,
-    FooterColumns as UnstyledFooterColumns,
-    MadeBy as UnstyledMadeBy,
-    SocialChannels,
-} from '@streamr/streamr-layout'
 import { COLORS } from '~/shared/utils/styled'
+import { useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
-import { useCurrentChainSymbolicName } from '~/utils/chains'
 
 const MadeBy = styled(UnstyledMadeBy)`
     padding: 0 0 32px;
@@ -30,7 +30,7 @@ const FooterColumns = styled(UnstyledFooterColumns)`
 `
 
 const Footer = ({ topBorder = false }) => {
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     return (
         <LayoutFooter>

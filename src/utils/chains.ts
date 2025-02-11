@@ -2,8 +2,8 @@ import { Chain, config as configs } from '@streamr/config'
 import { produce } from 'immer'
 import { useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { ethereumNetworks } from '~/shared/utils/constants'
 import { defaultChainKey } from '~/consts'
+import { ethereumNetworks } from '~/shared/utils/constants'
 import {
     ChainConfigExtension,
     fallbackChainConfigExtension,
@@ -47,10 +47,7 @@ export function useCurrentChainId() {
     return useCurrentChain().id
 }
 
-/**
- * @todo rename to `useCurrentSymbolicChainName`
- */
-export function useCurrentChainSymbolicName() {
+export function useCurrentChainKey() {
     return getSymbolicChainName(useCurrentChainId())
 }
 

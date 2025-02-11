@@ -20,7 +20,7 @@ import { Sponsorship } from '~/parsers/Sponsorship'
 import { ScrollTableCore } from '~/shared/components/ScrollTable/ScrollTable'
 import { useWalletAccount } from '~/shared/stores/wallet'
 import { OrderDirection } from '~/types'
-import { useCurrentChainId, useCurrentChainSymbolicName } from '~/utils/chains'
+import { useCurrentChainId, useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
 import { isSponsorshipFundedByOperator } from '~/utils/sponsorships'
 
@@ -53,7 +53,7 @@ export function QueriedSponsorshipsTable({
 
     const chainId = useCurrentChainId()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     const fundSponsorship = useFundSponsorshipCallback()
 

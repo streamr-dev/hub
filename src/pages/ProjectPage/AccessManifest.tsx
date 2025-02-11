@@ -14,11 +14,7 @@ import { REGULAR, TABLET } from '~/shared/utils/styled'
 import { timeUnits } from '~/shared/utils/timeUnit'
 import { useIsAccessibleByCurrentWallet } from '~/stores/projectDraft'
 import { formatChainName } from '~/utils'
-import {
-    getChainConfig,
-    useCurrentChainId,
-    useCurrentChainSymbolicName,
-} from '~/utils/chains'
+import { getChainConfig, useCurrentChainId, useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
 import { errorToast } from '~/utils/toast'
 
@@ -49,7 +45,7 @@ export function AccessManifest({
 
     const { pricePerSecond, chainId, pricingTokenAddress } = firstSalePoint
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     return (
         <Root>

@@ -1,16 +1,16 @@
 import React from 'react'
-import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+import { Button } from '~/components/Button'
+import { FloatingToolbar } from '~/components/FloatingToolbar'
 import { NavContainer } from '~/components/Nav'
 import { LogoLink, Navbar, NavbarItem } from '~/components/Nav/Nav.styles'
+import { useInViewport } from '~/hooks/useInViewport'
 import Logo from '~/shared/components/Logo'
-import { Button } from '~/components/Button'
 import { REGULAR } from '~/shared/utils/styled'
 import { ProjectDraft, usePersistProjectCallback } from '~/stores/projectDraft'
-import { FloatingToolbar } from '~/components/FloatingToolbar'
-import { useInViewport } from '~/hooks/useInViewport'
+import { useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
-import { useCurrentChainSymbolicName } from '~/utils/chains'
 
 const FlexNavbar = styled(Navbar)`
     display: flex;
@@ -45,7 +45,7 @@ export default function EditorNav() {
 
     const [attach, isSaveButtonVisible] = useInViewport()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     return (
         <NavContainer>

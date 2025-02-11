@@ -57,7 +57,7 @@ import { useWalletAccount } from '~/shared/stores/wallet'
 import { ChartPeriod, XY } from '~/types'
 import { abbr } from '~/utils'
 import { toBigInt, toFloat } from '~/utils/bn'
-import { useCurrentChainId, useCurrentChainSymbolicName } from '~/utils/chains'
+import { useCurrentChainId, useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
 import { errorToast } from '~/utils/toast'
 
@@ -270,7 +270,7 @@ function MyOperatorSummary() {
 
     const chartLabel = chartId === 'stake' ? 'Total stake' : 'Cumulative earnings'
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     return (
         <NetworkPageSegment
@@ -498,7 +498,7 @@ function MyDelegations() {
             .flatMap((page) => page.elements)
             .filter((d) => d.contractVersion !== 1) || []
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     return (
         <NetworkPageSegment title="My delegations" foot>
@@ -613,7 +613,7 @@ function MyDelegations() {
 function MySponsorships() {
     const query = useSponsorshipsForCreatorQuery(useWalletAccount())
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     return (
         <NetworkPageSegment title="My sponsorships" foot>

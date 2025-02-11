@@ -7,7 +7,7 @@ import Layout from '~/components/Layout'
 import { ParseError } from '~/errors'
 import appCrashedImage from '~/shared/assets/images/app_crashed.png'
 import appCrashedImage2x from '~/shared/assets/images/app_crashed@2x.png'
-import { useCurrentChainSymbolicName } from '~/utils/chains'
+import { useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
 
 export default function GenericErrorPage() {
@@ -62,7 +62,7 @@ function ParseErrorPage() {
 }
 
 export function GenericErrorPageContent() {
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
     return (
         <Root>
             <EmptyState

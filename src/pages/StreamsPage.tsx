@@ -21,14 +21,14 @@ import {
     useStreamsQuery,
 } from '~/hooks/streams'
 import { useTableOrder } from '~/hooks/useTableOrder'
+import { useUrlParams } from '~/hooks/useUrlParams'
 import SearchBar, { SearchBarWrap } from '~/shared/components/SearchBar'
 import Tabs, { Tab } from '~/shared/components/Tabs'
 import { useWalletAccount } from '~/shared/stores/wallet'
 import { COLORS, TABLET } from '~/shared/utils/styled'
-import { useCurrentChainFullName, useCurrentChainSymbolicName } from '~/utils/chains'
-import { Route as R, routeOptions } from '~/utils/routes'
-import { useUrlParams } from '~/hooks/useUrlParams'
 import { OrderDirection } from '~/types'
+import { useCurrentChainFullName, useCurrentChainKey } from '~/utils/chains'
+import { Route as R, routeOptions } from '~/utils/routes'
 
 const DEFAULT_ORDER_BY = 'peerCount'
 const DEFAULT_ORDER_DIRECTION = 'desc'
@@ -48,7 +48,7 @@ export function StreamsPage() {
 
     const account = useWalletAccount()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     useEffect(
         function changeToAllTabOnWalletLock() {

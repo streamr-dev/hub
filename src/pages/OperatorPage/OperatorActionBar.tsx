@@ -20,7 +20,7 @@ import { getOperatorDelegationAmount } from '~/services/operators'
 import { useWalletAccount } from '~/shared/stores/wallet'
 import { COLORS, DESKTOP, TABLET } from '~/shared/utils/styled'
 import { goBack } from '~/utils'
-import { useCurrentChainId, useCurrentChainSymbolicName } from '~/utils/chains'
+import { useCurrentChainId, useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
 
 interface OperatorActionBarProps {
@@ -43,7 +43,7 @@ export function OperatorActionBar({ operator }: OperatorActionBarProps) {
 
     const currentChainId = useCurrentChainId()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     const canUndelegateQuery = useQuery({
         queryKey: [

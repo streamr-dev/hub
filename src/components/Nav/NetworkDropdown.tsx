@@ -5,7 +5,7 @@ import { NavLink, NavbarLinkDesktop } from '~/components/Nav/Nav.styles'
 import { DefaultSimpleDropdownMenu, SimpleDropdown } from '~/components/SimpleDropdown'
 import SvgIcon from '~/shared/components/SvgIcon'
 import { COLORS } from '~/shared/utils/styled'
-import { useCurrentChainSymbolicName } from '~/utils/chains'
+import { useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
 
 export function Dropdown() {
@@ -39,7 +39,7 @@ export function Dropdown() {
         }, 250)
     }
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     return (
         <NavbarLinkDesktop highlight={isOpen || isNetworkTabActive(pathname)}>

@@ -41,7 +41,7 @@ import { COLORS, LAPTOP, TABLET } from '~/shared/utils/styled'
 import { truncate } from '~/shared/utils/text'
 import { ChartPeriod } from '~/types'
 import { abbr } from '~/utils'
-import { useCurrentChainFullName, useCurrentChainSymbolicName } from '~/utils/chains'
+import { useCurrentChainFullName, useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
 
 const EmptyArray = []
@@ -145,7 +145,7 @@ export const SingleSponsorshipPage = () => {
         <NoData firstLine={`Sponsorship not found on the ${fullChainName} chain.`} />
     ) : null
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     const rawFundingEvents = fundingEventsQuery.data?.pages || EmptyArray
 

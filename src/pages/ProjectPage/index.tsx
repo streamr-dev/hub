@@ -36,8 +36,8 @@ import {
     useIsAccessibleByCurrentWallet,
 } from '~/stores/projectDraft'
 import { isProjectType } from '~/utils'
+import { useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
-import { useCurrentChainSymbolicName } from '~/utils/chains'
 import { AccessManifest } from './AccessManifest'
 import GetAccess from './GetAccess'
 import ProjectEditorPage from './ProjectEditorPage'
@@ -295,7 +295,7 @@ export function ProjectTabbedPage() {
 
     const canEdit = useCurrentProjectAbility(ProjectPermission.Edit)
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     return (
         <Layout pageTitle={name}>

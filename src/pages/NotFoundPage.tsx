@@ -1,13 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { Button } from '~/components/Button'
 import { EmptyState } from '~/components/EmptyState'
 import Layout from '~/components/Layout'
 import pageNotFoundPic from '~/shared/assets/images/404_blocks.png'
 import pageNotFoundPic2x from '~/shared/assets/images/404_blocks@2x.png'
-import { Button } from '~/components/Button'
+import { useCurrentChainFullName, useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
-import { useCurrentChainFullName, useCurrentChainSymbolicName } from '~/utils/chains'
 
 export default function NotFoundPage() {
     return (
@@ -18,7 +18,7 @@ export default function NotFoundPage() {
 }
 
 export function NotFoundPageContent() {
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     const fullChainName = useCurrentChainFullName()
 

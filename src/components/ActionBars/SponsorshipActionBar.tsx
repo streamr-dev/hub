@@ -26,7 +26,7 @@ import SvgIcon from '~/shared/components/SvgIcon'
 import { useWalletAccount } from '~/shared/stores/wallet'
 import { COLORS } from '~/shared/utils/styled'
 import { truncate, truncateStreamName } from '~/shared/utils/text'
-import { useCurrentChainId, useCurrentChainSymbolicName } from '~/utils/chains'
+import { useCurrentChainId, useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
 import { isSponsorshipFundedByOperator } from '~/utils/sponsorships'
 import { AbstractActionBar } from './AbstractActionBar'
@@ -73,7 +73,7 @@ export function SponsorshipActionBar({ sponsorship }: SponsorshipActionBarProps)
 
     const chainId = useCurrentChainId()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     return (
         <AbstractActionBar

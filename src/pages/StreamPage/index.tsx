@@ -37,7 +37,7 @@ import {
     usePersistStreamDraft,
     useStreamEntityQuery,
 } from '~/stores/streamDraft'
-import { useCurrentChainSymbolicName } from '~/utils/chains'
+import { useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
 import { AccessControlSection } from '../AbstractStreamEditPage/AccessControlSection'
 import CreateProjectHint from '../AbstractStreamEditPage/CreateProjectHint'
@@ -360,7 +360,7 @@ function Header({
 
     const ready = !!entity
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     return (
         <>

@@ -19,16 +19,16 @@ import {
     useSponsorshipsForCreatorQuery,
 } from '~/hooks/sponsorships'
 import { useTableOrder } from '~/hooks/useTableOrder'
+import { useUrlParams } from '~/hooks/useUrlParams'
 import Tabs, { Tab } from '~/shared/components/Tabs'
-import { useWalletAccount, useIsWalletLoading } from '~/shared/stores/wallet'
+import { useIsWalletLoading, useWalletAccount } from '~/shared/stores/wallet'
+import { OrderDirection } from '~/types'
 import {
     useCurrentChainFullName,
     useCurrentChainId,
-    useCurrentChainSymbolicName,
+    useCurrentChainKey,
 } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
-import { useUrlParams } from '~/hooks/useUrlParams'
-import { OrderDirection } from '~/types'
 
 enum TabOption {
     AllSponsorships = 'all',
@@ -118,7 +118,7 @@ export const SponsorshipsPage = () => {
 
     const navigate = useNavigate()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     useEffect(() => {
         if (!wallet && !isWalletLoading) {

@@ -12,7 +12,7 @@ import {
 } from '~/hooks/streams'
 import { ScrollTableCore } from '~/shared/components/ScrollTable/ScrollTable'
 import { OrderDirection } from '~/types'
-import { useCurrentChainId, useCurrentChainSymbolicName } from '~/utils/chains'
+import { useCurrentChainId, useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
 
 interface Props {
@@ -42,7 +42,7 @@ export function QueriedStreamsTable({
 
     const chainId = useCurrentChainId()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     const indexerQueryErrored = query.isError && isIndexerColumn(chainId, orderBy)
 

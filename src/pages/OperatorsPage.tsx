@@ -16,6 +16,7 @@ import {
     useOperatorForWalletQuery,
 } from '~/hooks/operators'
 import { useTableOrder } from '~/hooks/useTableOrder'
+import { useUrlParams } from '~/hooks/useUrlParams'
 import { Operator } from '~/parsers/Operator'
 import { ScrollTableCore } from '~/shared/components/ScrollTable/ScrollTable'
 import Tabs, { Tab } from '~/shared/components/Tabs'
@@ -25,10 +26,9 @@ import { saveOperator } from '~/utils'
 import {
     useCurrentChainFullName,
     useCurrentChainId,
-    useCurrentChainSymbolicName,
+    useCurrentChainKey,
 } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
-import { useUrlParams } from '~/hooks/useUrlParams'
 
 enum TabOption {
     AllOperators = 'all',
@@ -97,7 +97,7 @@ export const OperatorsPage = () => {
 
     const chainId = useCurrentChainId()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     const operatorQuery = useOperatorForWalletQuery(wallet)
 
@@ -226,7 +226,7 @@ function DelegationsTable({
             .flatMap((page) => page.elements)
             .filter((d) => d.contractVersion !== 1) || []
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     const chainFullName = useCurrentChainFullName()
 
@@ -312,7 +312,7 @@ function OperatorsTable({
 }) {
     const elements = query.data?.pages.flatMap((page) => page.elements) || []
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     const chainFullName = useCurrentChainFullName()
 

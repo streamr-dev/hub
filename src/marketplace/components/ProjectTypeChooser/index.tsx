@@ -15,7 +15,7 @@ import SvgIcon from '~/shared/components/SvgIcon'
 import { useWalletAccount } from '~/shared/stores/wallet'
 import { ProjectType } from '~/shared/types'
 import { COLORS, DESKTOP, REGULAR } from '~/shared/utils/styled'
-import { useCurrentChainId, useCurrentChainSymbolicName } from '~/utils/chains'
+import { useCurrentChainId, useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
 
 const Root = styled.div`
@@ -176,7 +176,7 @@ export const ProjectTypeChooser: FunctionComponent<{
 }> = ({ className, onClose }) => {
     const [selectedProductType, setSelectedProductType] = useState<ProjectType>()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     const link = useMemo<string | null>(() => {
         if (!selectedProductType) {

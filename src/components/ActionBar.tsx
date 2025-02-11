@@ -20,7 +20,7 @@ import Tabs, { Tab } from '~/shared/components/Tabs'
 import { useWalletAccount } from '~/shared/stores/wallet'
 import { TheGraph } from '~/shared/types'
 import { ProjectFilter } from '~/types'
-import { useCurrentChainSymbolicName } from '~/utils/chains'
+import { useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
 
 export enum TabOption {
@@ -73,7 +73,7 @@ const UnstyledActionBar = ({
 
     const navigate = useNavigate()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     return (
         <ActionBarContainer {...props}>

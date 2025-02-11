@@ -1,22 +1,22 @@
-import React from 'react'
 import moment from 'moment'
+import React from 'react'
 import styled from 'styled-components'
+import { Button } from '~/components/Button'
 import { SponsorshipDecimals } from '~/components/Decimals'
 import Spinner from '~/components/Spinner'
 import { FundedUntilCell, StreamIdCell } from '~/components/Table'
 import { Tooltip, TooltipIconWrap } from '~/components/Tooltip'
+import { useCollectEarnings } from '~/hooks/operators'
+import { useEditSponsorshipFunding } from '~/hooks/sponsorships'
 import { Operator } from '~/parsers/Operator'
 import { ScrollTable } from '~/shared/components/ScrollTable/ScrollTable'
 import SvgIcon from '~/shared/components/SvgIcon'
-import { Route as R, routeOptions } from '~/utils/routes'
 import {
     useCanCollectEarningsCallback,
     useUncollectedEarnings,
 } from '~/shared/stores/uncollectedEarnings'
-import { useCollectEarnings } from '~/hooks/operators'
-import { useEditSponsorshipFunding } from '~/hooks/sponsorships'
-import { Button } from '~/components/Button'
-import { useCurrentChainId, useCurrentChainSymbolicName } from '~/utils/chains'
+import { useCurrentChainId, useCurrentChainKey } from '~/utils/chains'
+import { Route as R, routeOptions } from '~/utils/routes'
 
 export function SponsorshipTable({
     operator,
@@ -33,7 +33,7 @@ export function SponsorshipTable({
 
     const currentChainId = useCurrentChainId()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     const allSponsorshipIds = operator.stakes.map(({ sponsorshipId }) => sponsorshipId)
 

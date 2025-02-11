@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import isPreventable from '~/utils/isPreventable'
 import Tabs, { Tab } from '~/shared/components/Tabs'
+import { useCurrentChainKey } from '~/utils/chains'
+import isPreventable from '~/utils/isPreventable'
 import { Route as R, routeOptions } from '~/utils/routes'
-import { useCurrentChainSymbolicName } from '~/utils/chains'
 
 export default function ProjectLinkTabs({
     projectId,
@@ -14,7 +14,7 @@ export default function ProjectLinkTabs({
 }) {
     const { pathname } = useLocation()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainName = useCurrentChainKey()
 
     if (!projectId || disabled) {
         return (
