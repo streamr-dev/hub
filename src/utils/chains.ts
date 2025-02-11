@@ -61,7 +61,7 @@ export function useCurrentChainFullName() {
 interface ChainEntry {
     config: Chain
     configExtension: ChainConfigExtension
-    symbolicName: string
+    chainKey: string
 }
 
 const chainEntriesByIdOrName: Partial<Record<string | number, ChainEntry | null>> = {}
@@ -76,10 +76,10 @@ function getChainEntry(chainIdOrName: string | number) {
 
     if (typeof entry === 'undefined') {
         entry = (() => {
-            const source = Object.entries<Chain>(configs).find(([symbolicName, config]) =>
+            const source = Object.entries<Chain>(configs).find(([chainKey, config]) =>
                 typeof chainIdOrName === 'string'
                     ? getPreferredChainName(chainIdOrName) ===
-                      getPreferredChainName(symbolicName)
+                      getPreferredChainName(chainKey)
                     : chainIdOrName === config.id,
             )
 
@@ -87,12 +87,12 @@ function getChainEntry(chainIdOrName: string | number) {
                 return null
             }
 
-            const [rawSymbolicName, config] = source
+            const [rawChainKey, config] = source
 
-            const symbolicName = getPreferredChainName(rawSymbolicName)
+            const chainKey = getPreferredChainName(rawChainKey)
 
             const configExtension =
-                parsedChainConfigExtension[symbolicName] || fallbackChainConfigExtension
+                parsedChainConfigExtension[chainKey] || fallbackChainConfigExtension
 
             const { dockerHost } = configExtension
 
@@ -122,7 +122,7 @@ function getChainEntry(chainIdOrName: string | number) {
             })
 
             return {
-                symbolicName,
+                chainKey,
                 config: sanitizedConfig,
                 configExtension,
             }
@@ -142,12 +142,12 @@ function getChainEntry(chainIdOrName: string | number) {
     return entry
 }
 
-export function getChainConfig(chainIdOrSymbolicName: string | number): Chain {
-    return getChainEntry(chainIdOrSymbolicName).config
+export function getChainConfig(chainIdOrChainKey: string | number): Chain {
+    return getChainEntry(chainIdOrChainKey).config
 }
 
 export function getChainKey(chainId: number) {
-    return getChainEntry(chainId).symbolicName
+    return getChainEntry(chainId).chainKey
 }
 
 export function getChainConfigExtension(chainId: number) {
