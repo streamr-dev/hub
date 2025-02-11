@@ -1,3 +1,4 @@
+import { Chain } from '@streamr/config'
 import { z } from 'zod'
 import { address0 } from '~/consts'
 import { getProjectImageUrl } from '~/getters'
@@ -9,7 +10,6 @@ import {
     timeUnitSecondsMultiplierMap,
     timeUnits,
 } from '~/shared/utils/timeUnit'
-import { Chain } from '~/types'
 import { toBigInt } from '~/utils/bn'
 import {
     getChainConfig,

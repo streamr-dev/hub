@@ -1,4 +1,3 @@
-import { config as configs } from '@streamr/config'
 import { MessageID } from '@streamr/sdk'
 import { TheGraph } from '~/shared/types'
 
@@ -41,32 +40,6 @@ export type ChainConfigKey =
     | 'minimumDelegationSeconds'
     | 'minimumDelegationWei'
     | 'earlyLeaverPenaltyWei'
-
-type ContractAddressKey = typeof configs extends Record<
-    any,
-    Record<'contracts', Partial<Record<infer K, string>>>
->
-    ? K
-    : never
-
-export interface Chain {
-    name: string
-    id: number
-    theGraphUrl?: string
-    rpcEndpoints: { url: string }[]
-    contracts: Partial<Record<ContractAddressKey | (string & {}), string>>
-    entryPoints?: {
-        nodeId: string
-        websocket: {
-            host: string
-            port: number
-            tls: boolean
-        }
-    }[]
-    nativeCurrency: { symbol: string; name: string; decimals: number }
-    blockExplorerUrl?: string
-    adminPrivateKey?: string
-}
 
 export type OrderDirection = 'asc' | 'desc'
 

@@ -45,7 +45,7 @@
     "@metamask/providers": "^17.1.2",
     "@sambego/storybook-styles": "^1.0.0",
     "@sentry/react": "^8.34.0",
-    "@streamr/config": "^5.4.0",
+    "@streamr/config": "^5.5.0",
     "@streamr/hub-contracts": "^1.1.2",
     "@streamr/sdk": "^102.0.0",
     "@streamr/streamr-icons": "^0.1.9",

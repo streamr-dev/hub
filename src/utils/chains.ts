@@ -1,14 +1,14 @@
-import { config as configs } from '@streamr/config'
+import { Chain, config as configs } from '@streamr/config'
 import { produce } from 'immer'
 import { useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { ethereumNetworks } from '~/shared/utils/constants'
+import { defaultChainKey } from '~/consts'
 import {
     ChainConfigExtension,
     fallbackChainConfigExtension,
     parsedChainConfigExtension,
 } from '~/utils/chainConfigExtension'
-import { Chain } from '~/types'
-import { ethereumNetworks } from '~/shared/utils/constants'
 import formatConfigUrl from './formatConfigUrl'
 
 function getPreferredChainName(chainName: string) {
@@ -24,12 +24,12 @@ function getChainConfigWithFallback(chainName: string): Chain {
         return getChainConfig(chainName)
     } catch (_) {}
 
-    return getChainConfig('polygon')
+    return getChainConfig(defaultChainKey)
 }
 
 export function getCurrentChain() {
     return getChainConfigWithFallback(
-        new URLSearchParams(window.location.search).get('chain') || 'polygon',
+        new URLSearchParams(window.location.search).get('chain') || defaultChainKey,
     )
 }
 
@@ -38,7 +38,7 @@ export function getCurrentChainId() {
 }
 
 export function useCurrentChain() {
-    const chainName = useSearchParams()[0].get('chain') || 'polygon'
+    const chainName = useSearchParams()[0].get('chain') || defaultChainKey
 
     return useMemo(() => getChainConfigWithFallback(chainName), [chainName])
 }

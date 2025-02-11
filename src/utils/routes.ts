@@ -1,4 +1,5 @@
 import queryString from 'query-string'
+import { defaultChainKey } from '~/consts'
 import { getSymbolicChainName } from './chains'
 
 interface RouteOptions {
@@ -27,7 +28,7 @@ function withSuffix<P extends string>(pathname: P, options: RouteOptions = {}) {
 
     const qs = options.search
         ? queryString.stringify(
-              chain === 'polygon'
+              chain === defaultChainKey
                   ? search
                   : {
                         ...search,

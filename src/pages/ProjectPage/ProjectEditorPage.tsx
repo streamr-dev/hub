@@ -1,3 +1,4 @@
+import { Chain } from '@streamr/config'
 import React, { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled, { css } from 'styled-components'
@@ -21,18 +22,17 @@ import { deleteProject } from '~/services/projects'
 import { DetailsPageHeader } from '~/shared/components/DetailsPageHeader'
 import LoadingIndicator from '~/shared/components/LoadingIndicator'
 import useIsMounted from '~/shared/hooks/useIsMounted'
+import { ProjectType, SalePoint } from '~/shared/types'
+import { ProjectDraft } from '~/stores/projectDraft'
+import { SalePointsPayload } from '~/types/projects'
+import { formatChainName } from '~/utils'
 import {
     getChainConfig,
     getChainConfigExtension,
     useCurrentChainId,
 } from '~/utils/chains'
-import { ProjectType, SalePoint } from '~/shared/types'
-import { ProjectDraft } from '~/stores/projectDraft'
-import { Chain } from '~/types'
-import { SalePointsPayload } from '~/types/projects'
-import { formatChainName } from '~/utils'
-import { toastedOperation } from '~/utils/toastedOperation'
 import { Route as R, routeOptions } from '~/utils/routes'
+import { toastedOperation } from '~/utils/toastedOperation'
 import DataUnionFee from './DataUnionFee'
 import DataUnionPayment from './DataUnionPayment'
 import EditorHero from './EditorHero'

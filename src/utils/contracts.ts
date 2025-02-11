@@ -97,8 +97,6 @@ export function getContractAddress(
                 return contracts.SponsorshipStakeWeightedAllocationPolicy
             case 'sponsorshipVoteKickPolicy':
                 return contracts.SponsorshipVoteKickPolicy
-            case 'sponsorshipPaymentToken':
-                return contracts.SponsorshipPaymentToken
             case 'streamRegistry':
                 return contracts.StreamRegistry
             case 'streamStorage':
