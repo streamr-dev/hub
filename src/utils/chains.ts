@@ -48,7 +48,7 @@ export function useCurrentChainId() {
 }
 
 export function useCurrentChainKey() {
-    return getSymbolicChainName(useCurrentChainId())
+    return getChainKey(useCurrentChainId())
 }
 
 /**
@@ -146,7 +146,7 @@ export function getChainConfig(chainIdOrSymbolicName: string | number): Chain {
     return getChainEntry(chainIdOrSymbolicName).config
 }
 
-export function getSymbolicChainName(chainId: number) {
+export function getChainKey(chainId: number) {
     return getChainEntry(chainId).symbolicName
 }
 
