@@ -25,10 +25,10 @@ import useIsMounted from '~/shared/hooks/useIsMounted'
 import { ProjectType, SalePoint } from '~/shared/types'
 import { ProjectDraft } from '~/stores/projectDraft'
 import { SalePointsPayload } from '~/types/projects'
-import { formatChainName } from '~/utils'
 import {
-    getChainConfig,
-    getChainConfigExtension,
+    getChainDisplayName,
+    getChainKey,
+    getMarketplaceChainConfigs,
     useCurrentChainId,
 } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
@@ -59,15 +59,13 @@ export default function ProjectEditorPage() {
 
     const chainId = useCurrentChainId()
 
-    const availableChains = useMemo<Chain[]>(
-        () => getChainConfigExtension(chainId).marketplaceChains.map(getChainConfig),
+    const availableChainConfigs = useMemo<Chain[]>(
+        () => getMarketplaceChainConfigs(chainId),
         [chainId],
     )
 
-    const salePoints = availableChains
-        .map<SalePoint | undefined>(
-            ({ name: chainName }) => existingSalePoints[chainName],
-        )
+    const salePoints = availableChainConfigs
+        .map<SalePoint | undefined>(({ id }) => existingSalePoints[getChainKey(id)])
         .filter(Boolean) as SalePoint[]
 
     function onSalePointChange(value: SalePoint) {
@@ -76,16 +74,16 @@ export default function ProjectEditorPage() {
         }
 
         update((draft) => {
-            const { name: chainName } = getChainConfig(value.chainId)
+            const chainKey = getChainKey(value.chainId)
 
-            if (draft.salePoints[chainName]?.readOnly) {
+            if (draft.salePoints[chainKey]?.readOnly) {
                 /**
                  * Read-only sale point must not be updated.
                  */
                 return
             }
 
-            draft.salePoints[chainName] = value
+            draft.salePoints[chainKey] = value
 
             if (draft.type !== ProjectType.DataUnion) {
                 return
@@ -151,14 +149,15 @@ export default function ProjectEditorPage() {
                                     </Content>
                                     <Content $desktopMaxWidth={728}>
                                         {salePoints.map((salePoint) => {
-                                            const chainName = getChainConfig(
+                                            const chainKey = getChainKey(
                                                 salePoint.chainId,
-                                            ).name
+                                            )
 
-                                            const formattedChainName =
-                                                formatChainName(chainName)
+                                            const chainName = getChainDisplayName(
+                                                salePoint.chainId,
+                                            )
 
-                                            const beneficiaryErrorKey = `salePoints.${chainName}.beneficiaryAddress`
+                                            const beneficiaryErrorKey = `salePoints.${chainKey}.beneficiaryAddress`
 
                                             const beneficiaryInvalid =
                                                 !!errors[beneficiaryErrorKey]
@@ -172,7 +171,7 @@ export default function ProjectEditorPage() {
                                                 >
                                                     <h4>
                                                         Set the payment token and price on
-                                                        the {formattedChainName} chain
+                                                        the {chainName} chain
                                                     </h4>
                                                     <p>
                                                         You can set a price for others to
@@ -191,7 +190,7 @@ export default function ProjectEditorPage() {
                                                     <p>
                                                         This wallet address receives the
                                                         payments for this product on{' '}
-                                                        {formattedChainName} chain.
+                                                        {chainName} chain.
                                                     </p>
                                                     <BeneficiaryAddressEditor
                                                         invalid={beneficiaryInvalid}
@@ -325,10 +324,8 @@ export default function ProjectEditorPage() {
                                                             <>
                                                                 Set the payment token and
                                                                 price on&nbsp;the&nbsp;
-                                                                {formatChainName(
-                                                                    getChainConfig(
-                                                                        salePoint.chainId,
-                                                                    ).name,
+                                                                {getChainDisplayName(
+                                                                    salePoint.chainId,
                                                                 )}{' '}
                                                                 chain
                                                             </>

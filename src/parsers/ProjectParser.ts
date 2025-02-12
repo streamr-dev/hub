@@ -7,14 +7,15 @@ import { getMostRelevantTimeUnit } from '~/marketplace/utils/price'
 import { ProjectType, SalePoint } from '~/shared/types'
 import {
     TimeUnit,
-    timeUnitSecondsMultiplierMap,
     timeUnits,
+    timeUnitSecondsMultiplierMap,
 } from '~/shared/utils/timeUnit'
 import { toBigInt } from '~/utils/bn'
 import {
     getChainConfig,
-    getChainConfigExtension,
+    getChainKey,
     getCurrentChainId,
+    getMarketplaceChainConfigs,
 } from '~/utils/chains'
 import { getContractAddress } from '~/utils/contracts'
 import { getTokenInfo } from '~/utils/tokens'
@@ -149,13 +150,12 @@ export function parseProject(value: unknown, options: ParseProjectOptions) {
                 }
             }
 
-            const chains: Chain[] =
-                getChainConfigExtension(chainId).marketplaceChains.map(getChainConfig)
+            const chains: Chain[] = getMarketplaceChainConfigs(chainId)
 
             const salePoints: Record<string, SalePoint | undefined> = {}
 
-            chains.map(({ id, name: chainName }) => {
-                salePoints[chainName] = {
+            chains.map(({ id }) => {
+                salePoints[getChainKey(id)] = {
                     beneficiaryAddress: '',
                     chainId: id,
                     enabled: false,
@@ -172,9 +172,11 @@ export function parseProject(value: unknown, options: ParseProjectOptions) {
                     const { domainId, pricingTokenAddress, pricePerSecond, beneficiary } =
                         paymentDetails[i]
 
-                    const { id: chainId, name: chainName } = getChainConfig(
-                        Number(domainId),
-                    )
+                    /**
+                     * @todo Make sure we can trust domainId's type. It says it's a number thus
+                     * the explicit type coercion *should be* redundant.
+                     */
+                    const { id: chainId } = getChainConfig(Number(domainId))
 
                     const { decimals } = await getTokenInfo(pricingTokenAddress, chainId)
 
@@ -189,7 +191,7 @@ export function parseProject(value: unknown, options: ParseProjectOptions) {
                         throw new Error('Invalid multiplier')
                     }
 
-                    salePoints[chainName] = {
+                    salePoints[getChainKey(chainId)] = {
                         beneficiaryAddress: isOpenData
                             ? address0
                             : beneficiary.toLowerCase(),
@@ -239,13 +241,12 @@ export function parseProject(value: unknown, options: ParseProjectOptions) {
 export type ParsedProject = Awaited<ReturnType<typeof parseProject>>
 
 function getEmptySalePoints(chainId: number) {
-    const chains: Chain[] =
-        getChainConfigExtension(chainId).marketplaceChains.map(getChainConfig)
+    const marketplaceChainConfigs: Chain[] = getMarketplaceChainConfigs(chainId)
 
     const salePoints: Record<string, SalePoint | undefined> = {}
 
-    chains.map(({ id, name: chainName }) => {
-        salePoints[chainName] = {
+    marketplaceChainConfigs.map(({ id }) => {
+        salePoints[getChainKey(id)] = {
             beneficiaryAddress: '',
             chainId: id,
             enabled: false,

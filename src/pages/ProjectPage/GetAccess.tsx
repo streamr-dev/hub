@@ -12,8 +12,7 @@ import {
 import { ProjectType, SalePoint } from '~/shared/types'
 import { MEDIUM } from '~/shared/utils/styled'
 import { timeUnits } from '~/shared/utils/timeUnit'
-import { formatChainName } from '~/utils'
-import { getChainConfig, useCurrentChainId } from '~/utils/chains'
+import { getChainDisplayName, useCurrentChainId } from '~/utils/chains'
 import { errorToast } from '~/utils/toast'
 
 const GetAccessContainer = styled.div`
@@ -90,7 +89,7 @@ export default function GetAccess({
                             timeUnit={timeUnits.hour}
                         />
                     </strong>{' '}
-                    on <strong>{formatChainName(getChainConfig(chainId).name)}</strong>
+                    on <strong>{getChainDisplayName(chainId)}</strong>
                     {count > 0 && (
                         <>
                             and on {count} other chain{count > 1 && 's'}

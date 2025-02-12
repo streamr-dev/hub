@@ -19,18 +19,4 @@ export const paymentCurrencies = {
     NATIVE: 'NATIVE',
 }
 
-export const ethereumNetworks = {
-    '1': 'Ethereum Mainnet',
-    '3': 'Ropsten',
-    '4': 'Rinkeby',
-    '5': 'Görli',
-    '42': 'Kovan',
-    '100': 'Gnosis',
-    '137': 'Polygon',
-    '8995': 'Dev0',
-    '8997': 'Dev1',
-    '31337': 'Dev2',
-    '80002': 'Amoy',
-}
-
 export const maxFileSizeForImageUpload = 5242880

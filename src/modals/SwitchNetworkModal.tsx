@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Buttons } from '~/components/Buttons'
 import PngIcon from '~/shared/components/PngIcon'
-import { getChainConfig } from '~/utils/chains'
+import { getChainDisplayName, getChainKey } from '~/utils/chains'
 import { RejectionReason } from '~/utils/exceptions'
 import { Footer } from './BaseModal'
 import Modal, { ModalProps } from './Modal'
@@ -15,7 +15,7 @@ interface Props extends Pick<ModalProps, 'onReject' | 'darkBackdrop'> {
 
 function getChainName(chainId: number | string) {
     try {
-        return getChainConfig(chainId).name
+        return getChainDisplayName(getChainKey(chainId, { failOnNotFound: true }))
     } catch (_) {
         return `#${chainId}`
     }

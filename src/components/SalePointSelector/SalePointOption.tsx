@@ -1,17 +1,16 @@
+import { produce } from 'immer'
 import React, { ComponentProps, ReactNode, useEffect, useRef, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { z } from 'zod'
-import { produce } from 'immer'
-import SvgIcon from '~/shared/components/SvgIcon'
-import { SalePoint } from '~/shared/types'
-import { COLORS } from '~/shared/utils/styled'
+import { getDataUnion, getDataUnionsOwnedByInChain } from '~/getters/du'
+import { SelectField2 } from '~/marketplace/components/SelectField2'
 import { Tick as PrestyledTick } from '~/shared/components/Checkbox'
 import NetworkIcon from '~/shared/components/NetworkIcon'
-import { formatChainName } from '~/utils'
+import SvgIcon from '~/shared/components/SvgIcon'
 import { useWalletAccount } from '~/shared/stores/wallet'
-import { SelectField2 } from '~/marketplace/components/SelectField2'
-import { getDataUnion, getDataUnionsOwnedByInChain } from '~/getters/du'
-import { getChainConfig } from '~/utils/chains'
+import { SalePoint } from '~/shared/types'
+import { COLORS } from '~/shared/utils/styled'
+import { getChainDisplayName } from '~/utils/chains'
 import { Root as SalePointTokenSelectorRoot } from './SalePointTokenSelector'
 
 export interface OptionProps {
@@ -31,10 +30,6 @@ export default function SalePointOption({
     multiSelect = false,
 }: SalePointOptionProps) {
     const { chainId, enabled, readOnly } = salePoint
-
-    const chain = getChainConfig(chainId)
-
-    const formattedChainName = formatChainName(chain.name)
 
     return (
         <DropdownWrap $open={enabled}>
@@ -56,7 +51,7 @@ export default function SalePointOption({
                     <RadioCircle $checked={enabled} $disabled={readOnly} />
                 )}
                 <ChainIcon chainId={chainId} />
-                <ToggleText>{formattedChainName}</ToggleText>
+                <ToggleText>{getChainDisplayName(chainId)}</ToggleText>
                 {multiSelect && <PlusSymbol />}
             </DropdownToggle>
             <DropdownOuter>

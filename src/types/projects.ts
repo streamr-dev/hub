@@ -3,16 +3,23 @@ import { z } from 'zod'
 import { address0 } from '~/consts'
 import { ProjectType, SalePoint } from '~/shared/types'
 import { timeUnits } from '~/shared/utils/timeUnit'
-import { formatChainName } from '~/utils'
-import { getCurrentChain } from '~/utils/chains'
+import {
+    getChainDisplayName,
+    getChainKey,
+    getCurrentChain,
+    isChainKey,
+} from '~/utils/chains'
 import { getContractAddress } from '~/utils/contracts'
 
-function getFormattedChainNameFromContext({ path: [, chainName] }: z.RefinementCtx) {
-    if (typeof chainName !== 'string' || !chainName) {
-        return ''
-    }
+function getFormattedChainNameFromContext({ path: [, chainKey] }: z.RefinementCtx) {
+    const chainName =
+        typeof chainKey === 'number'
+            ? `#${chainKey}`
+            : isChainKey(chainKey)
+            ? getChainDisplayName(chainKey)
+            : `"${chainKey}"`
 
-    return `for ${formatChainName(chainName)} network`
+    return `for ${chainName} network`
 }
 
 export const SalePointsPayload = z.record(
@@ -192,10 +199,10 @@ export const OpenDataPayload = z.object({
             .transform((v) => v || undefined),
     }),
     salePoints: SalePointsPayload.transform(() => {
-        const { name: chainName, id: chainId } = getCurrentChain()
+        const { id: chainId } = getCurrentChain()
 
         return {
-            [chainName]: {
+            [getChainKey(chainId)]: {
                 beneficiaryAddress: address0,
                 chainId,
                 enabled: true,

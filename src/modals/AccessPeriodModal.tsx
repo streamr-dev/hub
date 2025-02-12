@@ -10,9 +10,8 @@ import Text from '~/shared/components/Ui/Text'
 import useIsMounted from '~/shared/hooks/useIsMounted'
 import { COLORS, LIGHT, MEDIUM } from '~/shared/utils/styled'
 import { TimeUnit, timeUnits } from '~/shared/utils/timeUnit'
-import { formatChainName } from '~/utils'
 import { toFloat } from '~/utils/bn'
-import { getChainConfig } from '~/utils/chains'
+import { getChainDisplayName } from '~/utils/chains'
 import { RejectionReason } from '~/utils/exceptions'
 import { convertPrice } from '~/utils/price'
 import ProjectModal, { Actions } from './ProjectModal'
@@ -202,8 +201,6 @@ export default function AccessPeriodModal({
         setSelectedUnit(unit)
     }, [unit])
 
-    const chainName = formatChainName(getChainConfig(chainId).name)
-
     const total = ((a: bigint) => (a > 0n ? a : 0n))(
         convertPrice(pricePerSecond, [length, selectedUnit]),
     )
@@ -289,7 +286,7 @@ export default function AccessPeriodModal({
                 <DetailsContainer>
                     <Chain>
                         <ChainIcon chainId={chainId} />
-                        <ChainName>{chainName}</ChainName>
+                        <ChainName>{getChainDisplayName(chainId)}</ChainName>
                     </Chain>
                     <AmountBox>
                         <AmountBar>
