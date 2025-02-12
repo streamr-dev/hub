@@ -20,7 +20,7 @@ import Tabs, { Tab } from '~/shared/components/Tabs'
 import { useWalletAccount } from '~/shared/stores/wallet'
 import { TheGraph } from '~/shared/types'
 import { ProjectFilter } from '~/types'
-import { useCurrentChainSymbolicName } from '~/utils/chains'
+import { useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
 
 export enum TabOption {
@@ -73,7 +73,7 @@ const UnstyledActionBar = ({
 
     const navigate = useNavigate()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainKey = useCurrentChainKey()
 
     return (
         <ActionBarContainer {...props}>
@@ -93,7 +93,7 @@ const UnstyledActionBar = ({
                     <Tabs
                         selection={scope}
                         onSelectionChange={(id) => {
-                            navigate(R.projects(routeOptions(chainName, { tab: id })))
+                            navigate(R.projects(routeOptions(chainKey, { tab: id })))
                         }}
                     >
                         <Tab id={TabOption.Any}>All projects</Tab>

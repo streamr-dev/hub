@@ -1,19 +1,18 @@
 import React from 'react'
-import styled, { css } from 'styled-components'
 import { Img } from 'react-image'
-import Logo from '~/shared/components/Logo'
-import Skeleton from '~/shared/components/Skeleton'
-import Rect from '~/shared/components/Rect'
+import styled, { css } from 'styled-components'
+import { getProjectImageUrl } from '~/getters'
+import { TheGraphProject } from '~/services/projects'
 import Link from '~/shared/components/Link'
+import Logo from '~/shared/components/Logo'
+import Rect from '~/shared/components/Rect'
+import Skeleton from '~/shared/components/Skeleton'
 import SvgIcon from '~/shared/components/SvgIcon'
 import { COLORS } from '~/shared/utils/styled'
-import { TheGraphProject } from '~/services/projects'
-import { getProjectImageUrl } from '~/getters'
-import { useCurrentChainId } from '~/utils/chains'
+import { useCurrentChainId, useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
-import { useCurrentChainSymbolicName } from '~/utils/chains'
-import Summary from './Summary'
 import { DataUnionBadge, StreamStatsBadge } from './Badge'
+import Summary from './Summary'
 
 const Image = styled(Img)`
     img& {
@@ -194,12 +193,12 @@ function MarketplaceProductTile({
 }: MarketplaceProductTileProps) {
     const chainId = useCurrentChainId()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainKey = useCurrentChainKey()
 
     return (
         <Tile {...props}>
             <TileImageContainer>
-                <Link to={R.projectOverview(product.id, routeOptions(chainName))}>
+                <Link to={R.projectOverview(product.id, routeOptions(chainKey))}>
                     <TileImageContainer autoSize>
                         <TileThumbnail
                             src={
@@ -219,17 +218,17 @@ function MarketplaceProductTile({
                         right
                         linkTo={R.projectOverview(
                             product.id,
-                            routeOptions(chainName, undefined, 'stats'),
+                            routeOptions(chainKey, undefined, 'stats'),
                         )}
                     />
                 )}
                 {showEditButton && (
-                    <EditButton to={R.projectEdit(product.id, routeOptions(chainName))}>
+                    <EditButton to={R.projectEdit(product.id, routeOptions(chainKey))}>
                         <SvgIcon name={'pencilFull'} />
                     </EditButton>
                 )}
             </TileImageContainer>
-            <Link to={R.projectOverview(product.id, routeOptions(chainName))}>
+            <Link to={R.projectOverview(product.id, routeOptions(chainKey))}>
                 <Summary
                     name={
                         (product.metadata && product.metadata.name) || 'Untitled project'

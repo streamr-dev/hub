@@ -18,7 +18,7 @@ import { Operation } from '~/shared/toasts/TransactionListToast'
 import { ProjectType } from '~/shared/types'
 import { isProjectOwnedBy } from '~/utils'
 import { toBN } from '~/utils/bn'
-import { useCurrentChainSymbolicName } from '~/utils/chains'
+import { useCurrentChainKey } from '~/utils/chains'
 import { createDraftStore, getEmptyDraft } from '~/utils/draft'
 import networkPreflight from '~/utils/networkPreflight'
 import { Route as R, routeOptions } from '~/utils/routes'
@@ -278,7 +278,7 @@ export function usePersistProjectCallback() {
 
     const navigate = useNavigate()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainKey = useCurrentChainKey()
 
     return useCallback(() => {
         persist({
@@ -287,7 +287,7 @@ export function usePersistProjectCallback() {
                     return
                 }
 
-                navigate(R.projects(routeOptions(chainName)))
+                navigate(R.projects(routeOptions(chainKey)))
             },
 
             onError(e) {
@@ -298,5 +298,5 @@ export function usePersistProjectCallback() {
                 console.warn('Failed to publish', e)
             },
         })
-    }, [persist, navigate, chainName])
+    }, [persist, navigate, chainKey])
 }

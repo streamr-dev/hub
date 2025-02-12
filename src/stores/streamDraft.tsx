@@ -22,11 +22,7 @@ import { Operation } from '~/shared/toasts/TransactionListToast'
 import getNativeTokenName from '~/shared/utils/nativeToken'
 import { requirePositiveBalance } from '~/shared/utils/requirePositiveBalance'
 import { Layer } from '~/utils/Layer'
-import {
-    getCurrentChainId,
-    useCurrentChainId,
-    useCurrentChainSymbolicName,
-} from '~/utils/chains'
+import { getCurrentChainId, useCurrentChainId, useCurrentChainKey } from '~/utils/chains'
 import { createDraftStore, getEmptyDraft } from '~/utils/draft'
 import {
     isMessagedObject,
@@ -597,7 +593,7 @@ const NewStreamLink = styled(Link)`
 
 function getOpenStreamLink(streamId: string) {
     return function OpenStreamLink() {
-        const chainName = useCurrentChainSymbolicName()
+        const chainKey = useCurrentChainKey()
 
         const id: string = decodeURIComponent(
             useMatch(R.streamOverview(':id'))?.params['id'] || '',
@@ -608,7 +604,7 @@ function getOpenStreamLink(streamId: string) {
         }
 
         return (
-            <NewStreamLink to={R.streamOverview(streamId, routeOptions(chainName))}>
+            <NewStreamLink to={R.streamOverview(streamId, routeOptions(chainKey))}>
                 Open
             </NewStreamLink>
         )

@@ -1,6 +1,6 @@
 import queryString from 'query-string'
 import { defaultChainKey } from '~/consts'
-import { getSymbolicChainName } from './chains'
+import { getChainKey } from './chains'
 
 interface RouteOptions {
     search?: Record<'chain', string> & Record<string, any>
@@ -15,7 +15,7 @@ export function routeOptions(
     return {
         search: {
             ...search,
-            chain: typeof chain === 'string' ? chain : getSymbolicChainName(chain),
+            chain: typeof chain === 'string' ? chain : getChainKey(chain),
         },
         hash,
     }

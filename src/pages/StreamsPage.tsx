@@ -21,14 +21,14 @@ import {
     useStreamsQuery,
 } from '~/hooks/streams'
 import { useTableOrder } from '~/hooks/useTableOrder'
+import { useUrlParams } from '~/hooks/useUrlParams'
 import SearchBar, { SearchBarWrap } from '~/shared/components/SearchBar'
 import Tabs, { Tab } from '~/shared/components/Tabs'
 import { useWalletAccount } from '~/shared/stores/wallet'
 import { COLORS, TABLET } from '~/shared/utils/styled'
-import { useCurrentChainFullName, useCurrentChainSymbolicName } from '~/utils/chains'
-import { Route as R, routeOptions } from '~/utils/routes'
-import { useUrlParams } from '~/hooks/useUrlParams'
 import { OrderDirection } from '~/types'
+import { useCurrentChainFullName, useCurrentChainKey } from '~/utils/chains'
+import { Route as R, routeOptions } from '~/utils/routes'
 
 const DEFAULT_ORDER_BY = 'peerCount'
 const DEFAULT_ORDER_DIRECTION = 'desc'
@@ -48,7 +48,7 @@ export function StreamsPage() {
 
     const account = useWalletAccount()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainKey = useCurrentChainKey()
 
     useEffect(
         function changeToAllTabOnWalletLock() {
@@ -56,9 +56,9 @@ export function StreamsPage() {
                 return
             }
 
-            navigate(R.streams(routeOptions(chainName, { tab: StreamsTabOption.All })))
+            navigate(R.streams(routeOptions(chainKey, { tab: StreamsTabOption.All })))
         },
-        [account, navigate, chainName],
+        [account, navigate, chainKey],
     )
 
     const {
@@ -130,7 +130,7 @@ export function StreamsPage() {
                             fullWidthOnMobile
                             selection={tab}
                             onSelectionChange={(id) => {
-                                navigate(R.streams(routeOptions(chainName, { tab: id })))
+                                navigate(R.streams(routeOptions(chainKey, { tab: id })))
                             }}
                         >
                             <Tab id={StreamsTabOption.All}>All streams</Tab>
@@ -148,7 +148,7 @@ export function StreamsPage() {
                         </Tabs>
                     </FiltersWrap>
                     <CreateStreamButtonWrap>
-                        <Button as={Link} to={R.stream('new', routeOptions(chainName))}>
+                        <Button as={Link} to={R.stream('new', routeOptions(chainKey))}>
                             Create stream
                         </Button>
                     </CreateStreamButtonWrap>

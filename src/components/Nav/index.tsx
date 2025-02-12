@@ -1,21 +1,19 @@
-import React, { FunctionComponent, HTMLAttributes } from 'react'
-import styled from 'styled-components'
-import { useLocation, Link, useNavigate } from 'react-router-dom'
 import { Button, HamburgerButton, Logo, NavOverlay } from '@streamr/streamr-layout'
-import { DESKTOP, TABLET } from '~/shared/utils/styled'
-import SvgIcon from '~/shared/components/SvgIcon'
-import { truncate } from '~/shared/utils/text'
-import { connectModal } from '~/modals/ConnectModal'
-import { useEns, useWalletAccount } from '~/shared/stores/wallet'
-import toast from '~/utils/toast'
-import { useOperatorForWalletQuery } from '~/hooks/operators'
-import { saveOperator } from '~/utils'
-import { useMediaQuery } from '~/hooks'
+import React, { FunctionComponent, HTMLAttributes } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
 import { ChainSelector as UnstyledChainSelector } from '~/components/ChainSelector'
-import { useCurrentChainId } from '~/utils/chains'
+import { useMediaQuery } from '~/hooks'
+import { useOperatorForWalletQuery } from '~/hooks/operators'
+import { connectModal } from '~/modals/ConnectModal'
+import SvgIcon from '~/shared/components/SvgIcon'
+import { useEns, useWalletAccount } from '~/shared/stores/wallet'
+import { DESKTOP, TABLET } from '~/shared/utils/styled'
+import { truncate } from '~/shared/utils/text'
+import { saveOperator } from '~/utils'
+import { useCurrentChainId, useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
-import { useCurrentChainSymbolicName } from '~/utils/chains'
-import { Avatarless, Name, Username } from './User'
+import toast from '~/utils/toast'
 import {
     Avatar,
     LogoLink,
@@ -36,8 +34,9 @@ import {
     UserInfoMobile,
     WalletAddress,
 } from './Nav.styles'
-import { Dropdown } from './NetworkDropdown'
 import { NetworkAccordion } from './NetworkAccordion'
+import { Dropdown } from './NetworkDropdown'
+import { Avatarless, Name, Username } from './User'
 
 const UnstyledDesktopNav: FunctionComponent = (props) => {
     const { pathname } = useLocation()
@@ -56,7 +55,7 @@ const UnstyledDesktopNav: FunctionComponent = (props) => {
 
     const chainId = useCurrentChainId()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainKey = useCurrentChainKey()
 
     return (
         <div {...props} data-testid={'desktop-nav'}>
@@ -71,14 +70,14 @@ const UnstyledDesktopNav: FunctionComponent = (props) => {
                     <div />
                     <NavbarItem>
                         <NavbarLinkDesktop highlight={pathname.startsWith(R.projects())}>
-                            <NavLink as={Link} to={R.projects(routeOptions(chainName))}>
+                            <NavLink as={Link} to={R.projects(routeOptions(chainKey))}>
                                 Projects
                             </NavLink>
                         </NavbarLinkDesktop>
                     </NavbarItem>
                     <NavbarItem>
                         <NavbarLinkDesktop highlight={pathname.startsWith(R.streams())}>
-                            <NavLink as={Link} to={R.streams(routeOptions(chainName))}>
+                            <NavLink as={Link} to={R.streams(routeOptions(chainKey))}>
                                 Streams
                             </NavLink>
                         </NavbarLinkDesktop>
@@ -138,7 +137,7 @@ const UnstyledDesktopNav: FunctionComponent = (props) => {
                                                         navigate(
                                                             R.operator(
                                                                 operator.id,
-                                                                routeOptions(chainName),
+                                                                routeOptions(chainKey),
                                                             ),
                                                         )
                                                     }}
@@ -202,7 +201,7 @@ const UnstyledMobileNav: FunctionComponent<{ className?: string }> = ({ classNam
 
     const { pathname } = useLocation()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainKey = useCurrentChainKey()
 
     return (
         <NavOverlay className={className}>
@@ -226,12 +225,12 @@ const UnstyledMobileNav: FunctionComponent<{ className?: string }> = ({ classNam
                     </UserInfoMobile>
                 )}
                 <NavbarLinkMobile highlight={pathname.startsWith(R.projects())}>
-                    <NavLink as={Link} to={R.projects(routeOptions(chainName))}>
+                    <NavLink as={Link} to={R.projects(routeOptions(chainKey))}>
                         Projects
                     </NavLink>
                 </NavbarLinkMobile>
                 <NavbarLinkMobile highlight={pathname.startsWith(R.streams())}>
-                    <NavLink as={Link} to={R.streams(routeOptions(chainName))}>
+                    <NavLink as={Link} to={R.streams(routeOptions(chainKey))}>
                         Streams
                     </NavLink>
                 </NavbarLinkMobile>

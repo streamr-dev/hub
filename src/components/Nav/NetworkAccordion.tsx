@@ -3,8 +3,8 @@ import { Link, useLocation } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import SvgIcon from '~/shared/components/SvgIcon'
 import { COLORS, MEDIUM, REGULAR } from '~/shared/utils/styled'
+import { useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
-import { useCurrentChainSymbolicName } from '~/utils/chains'
 import { NavLink, NavbarLinkMobile } from './Nav.styles'
 import { NetworkNavItems, isNetworkTabActive } from './NetworkDropdown'
 
@@ -13,7 +13,7 @@ export function NetworkAccordion() {
 
     const [isOpen, toggle] = useReducer((x) => !x, false)
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainKey = useCurrentChainKey()
 
     return (
         <>
@@ -23,7 +23,7 @@ export function NetworkAccordion() {
             >
                 <NavLink
                     as={Link}
-                    to={R.networkOverview(routeOptions(chainName))}
+                    to={R.networkOverview(routeOptions(chainKey))}
                     onClick={(e) => {
                         e.preventDefault()
 
@@ -47,7 +47,7 @@ export function NetworkAccordion() {
                         return (
                             <NetworkMobileLink
                                 {...rest}
-                                to={linkFn(routeOptions(chainName))}
+                                to={linkFn(routeOptions(chainKey))}
                                 key={title}
                             >
                                 <NetworkNavElement>

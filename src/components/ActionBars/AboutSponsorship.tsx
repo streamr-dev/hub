@@ -14,7 +14,7 @@ import { SponsorshipPaymentTokenName } from '~/components/SponsorshipPaymentToke
 import { ExternalLinkIcon } from '~/icons'
 import { Sponsorship } from '~/parsers/Sponsorship'
 import { truncateStreamName } from '~/shared/utils/text'
-import { useCurrentChainSymbolicName } from '~/utils/chains'
+import { useCurrentChainKey } from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
 
 interface AboutSponsorshipProps {
@@ -24,7 +24,7 @@ interface AboutSponsorshipProps {
 export function AboutSponsorship({ sponsorship }: AboutSponsorshipProps) {
     const { streamId } = sponsorship
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainKey = useCurrentChainKey()
 
     return (
         <DefaultSimpleDropdownMenu>
@@ -35,7 +35,7 @@ export function AboutSponsorship({ sponsorship }: AboutSponsorshipProps) {
                         <strong>{truncateStreamName(streamId)}</strong>
                         <div>
                             <Link
-                                to={R.stream(streamId, routeOptions(chainName))}
+                                to={R.stream(streamId, routeOptions(chainKey))}
                                 target="_blank"
                             >
                                 <ExternalLinkIcon />

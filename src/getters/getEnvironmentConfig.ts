@@ -1,3 +1,4 @@
+import { Chain } from '@streamr/config'
 import { z } from 'zod'
 import config from '~/config/environments.toml'
 import { defaultChainKey } from '~/consts'
@@ -15,25 +16,19 @@ const EnvironmentConfig = z
             !defaultChain || availableChains.includes(defaultChain),
         'Default chain is not listed in the collection of available chains',
     )
-    .transform(
-        ({
-            availableChains: symbolicChainNames,
-            defaultChain: defaultSymbolicChainName,
-            ...rest
-        }) => {
-            const availableChains = symbolicChainNames.map(getChainConfig)
+    .transform(({ availableChains, defaultChain, ...rest }) => {
+        const availableChainConfigs: Chain[] = availableChains.map(getChainConfig)
 
-            const defaultChain = defaultSymbolicChainName
-                ? getChainConfig(defaultSymbolicChainName)
-                : availableChains[0]
+        const defaultChainConfig: Chain = defaultChain
+            ? getChainConfig(defaultChain)
+            : availableChainConfigs[0]
 
-            return {
-                ...rest,
-                availableChains,
-                defaultChain,
-            }
-        },
-    )
+        return {
+            ...rest,
+            availableChains: availableChainConfigs,
+            defaultChain: defaultChainConfig,
+        }
+    })
 
 type EnvironmentConfig = z.infer<typeof EnvironmentConfig>
 

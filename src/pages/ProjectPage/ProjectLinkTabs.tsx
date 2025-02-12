@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import isPreventable from '~/utils/isPreventable'
 import Tabs, { Tab } from '~/shared/components/Tabs'
+import { useCurrentChainKey } from '~/utils/chains'
+import isPreventable from '~/utils/isPreventable'
 import { Route as R, routeOptions } from '~/utils/routes'
-import { useCurrentChainSymbolicName } from '~/utils/chains'
 
 export default function ProjectLinkTabs({
     projectId,
@@ -14,7 +14,7 @@ export default function ProjectLinkTabs({
 }) {
     const { pathname } = useLocation()
 
-    const chainName = useCurrentChainSymbolicName()
+    const chainKey = useCurrentChainKey()
 
     if (!projectId || disabled) {
         return (
@@ -47,7 +47,7 @@ export default function ProjectLinkTabs({
             <Tab
                 id="overview"
                 tag={Link}
-                to={R.projectOverview(projectId, routeOptions(chainName))}
+                to={R.projectOverview(projectId, routeOptions(chainKey))}
                 selected={pathname.startsWith(R.projectOverview(projectId))}
             >
                 Project overview
@@ -55,7 +55,7 @@ export default function ProjectLinkTabs({
             <Tab
                 id="connect"
                 tag={Link}
-                to={R.projectConnect(projectId, routeOptions(chainName))}
+                to={R.projectConnect(projectId, routeOptions(chainKey))}
                 selected={pathname.startsWith(R.projectConnect(projectId))}
             >
                 Connect
@@ -63,7 +63,7 @@ export default function ProjectLinkTabs({
             <Tab
                 id="liveData"
                 tag={Link}
-                to={R.projectLiveData(projectId, routeOptions(chainName))}
+                to={R.projectLiveData(projectId, routeOptions(chainKey))}
                 selected={pathname.startsWith(R.projectLiveData(projectId))}
             >
                 Live data
