@@ -2,28 +2,26 @@ import React from 'react'
 import styled from 'styled-components'
 import { Buttons } from '~/components/Buttons'
 import PngIcon from '~/shared/components/PngIcon'
-import { getChainDisplayName, getChainKey } from '~/utils/chains'
+import { getChainDisplayName, getChainKey, isKnownChainId } from '~/utils/chains'
 import { RejectionReason } from '~/utils/exceptions'
 import { Footer } from './BaseModal'
 import Modal, { ModalProps } from './Modal'
 
 interface Props extends Pick<ModalProps, 'onReject' | 'darkBackdrop'> {
-    expectedNetwork: number | string
-    actualNetwork: number | string
+    expectedChainId: number
+    actualChainId: number
     onResolve?: () => void
 }
 
-function getChainName(chainId: number | string) {
-    try {
-        return getChainDisplayName(getChainKey(chainId, { failOnNotFound: true }))
-    } catch (_) {
-        return `#${chainId}`
-    }
+function getChainName(chainId: number) {
+    return isKnownChainId(chainId)
+        ? getChainDisplayName(getChainKey(chainId))
+        : `#${chainId}`
 }
 
 export default function SwitchNetworkModal({
-    expectedNetwork,
-    actualNetwork,
+    expectedChainId,
+    actualChainId,
     onReject,
     onResolve,
     ...props
@@ -47,9 +45,9 @@ export default function SwitchNetworkModal({
                     <PngIcon name="wallet" alt="Switch network" />
                 </IconWrap>
                 <P>
-                    Please switch to the <em>{getChainName(expectedNetwork)}</em> network
+                    Please switch to the <em>{getChainName(expectedChainId)}</em> network
                     in your Ethereum wallet. It&apos;s currently in{' '}
-                    <em>{getChainName(actualNetwork)}</em>
+                    <em>{getChainName(actualChainId)}</em>
                     &nbsp;network.
                 </P>
             </Content>

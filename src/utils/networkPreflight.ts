@@ -14,15 +14,15 @@ export default async function networkPreflight(expectedChainId: number) {
     const provider = await getWalletProvider()
 
     try {
-        const currentChainId = await getChainId()
+        const actualChainId = await getChainId()
 
-        if (currentChainId === expectedChainId) {
+        if (actualChainId === expectedChainId) {
             return false
         }
 
         await toaster(SwitchNetworkModal, Layer.Modal).pop({
-            expectedNetwork: expectedChainId,
-            actualNetwork: currentChainId,
+            expectedChainId,
+            actualChainId,
         })
 
         await provider.request({

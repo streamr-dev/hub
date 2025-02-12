@@ -12,25 +12,14 @@ import formatConfigUrl from './formatConfigUrl'
 
 const lowerCasedChainKeyToChainKeyMap: Record<string, ChainKey | null | undefined> = {}
 
-interface GetChainKeyOptions {
-    failOnNotFound?: boolean
-}
-
 /**
  * @param candidate Chain key or chain slug (from config extension) or chain number. Defaults
  * to the default chain key (currently 'polygon').
  */
-export function getChainKey(
-    candidate: string | number,
-    { failOnNotFound = false }: GetChainKeyOptions = {},
-): ChainKey {
+export function getChainKey(candidate: string | number): ChainKey {
     const key = typeof candidate === 'number' ? candidate : candidate.toLowerCase()
 
     if (lowerCasedChainKeyToChainKeyMap[key] === null) {
-        if (failOnNotFound) {
-            throw new Error('ChainKey not found')
-        }
-
         return defaultChainKey
     }
 
@@ -73,10 +62,6 @@ export function getChainKey(
     )
 
     lowerCasedChainKeyToChainKeyMap[key] = null
-
-    if (failOnNotFound) {
-        throw new Error('ChainKey not found')
-    }
 
     return defaultChainKey
 }
@@ -184,6 +169,10 @@ export function getChainSlug(chainIdOrChainKey: ChainKey | number): string {
  */
 export function isChainKey(candidate: string): candidate is ChainKey {
     return Object.prototype.hasOwnProperty.call(configs, candidate)
+}
+
+export function isKnownChainId(candidate: number): boolean {
+    return Object.entries(configs).some(([, { id }]) => id === candidate)
 }
 
 export function getChainDisplayName(chainIdOrChainKey: ChainKey | number): string {
