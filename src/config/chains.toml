@@ -19,15 +19,16 @@ address = "0xde1112f631486CfC759A50196853011528bC5FA0"
 chainId = 31337
 name = "streamr-dev/dataunion"
 
-[amoy]
+[polygonAmoy]
 dataUnionJoinServerUrl = "https://join.dataunions.org/"
-marketplaceChains = ['amoy']
+marketplaceChains = ['polygonAmoy']
+slug = 'amoy'
 
-[[amoy.storageNodes]]
+[[polygonAmoy.storageNodes]]
 name = "Streamr Germany"
 address = "0x31546eEA76F2B2b3C5cC06B1c93601dc35c9D916"
 
-[[amoy.dataunionGraphNames]]
+[[polygonAmoy.dataunionGraphNames]]
 chainId = 80002
 name = "samt1803/dataunion-subgraphs"
 
