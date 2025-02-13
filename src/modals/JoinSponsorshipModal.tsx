@@ -1,5 +1,5 @@
 import CopyIcon from '@atlaskit/icon/glyph/copy'
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { toaster } from 'toasterhea'
 import { Alert } from '~/components/Alert'
@@ -9,7 +9,7 @@ import { getSelfDelegationFraction } from '~/getters'
 import { useConfigValueFromChain, useMediaQuery } from '~/hooks'
 import { useAllOperatorsForWalletQuery } from '~/hooks/operators'
 import { useSponsorshipTokenInfo } from '~/hooks/sponsorships'
-import { useInterceptHeartbeats } from '~/hooks/useInterceptHeartbeats'
+import { Heartbeat, useInterceptHeartbeats } from '~/hooks/useInterceptHeartbeats'
 import useOperatorLiveNodes from '~/hooks/useOperatorLiveNodes'
 import { SelectField2 } from '~/marketplace/components/SelectField2'
 import FormModal, {
@@ -35,6 +35,7 @@ import Label from '~/shared/components/Ui/Label'
 import useCopy from '~/shared/hooks/useCopy'
 import { useWalletAccount } from '~/shared/stores/wallet'
 import Toast from '~/shared/toasts/Toast'
+import { isNodeVersionGreaterThanOrEqualTo } from '~/shared/utils/nodeVersion'
 import { COLORS } from '~/shared/utils/styled'
 import { truncate } from '~/shared/utils/text'
 import { humanize } from '~/shared/utils/time'
@@ -54,6 +55,8 @@ interface Props extends Pick<FormModalProps, 'onReject'> {
 }
 
 const limitErrorToaster = toaster(Toast, Layer.Toast)
+
+const requiredNodeVersion = '102.0.0'
 
 function JoinSponsorshipModal({
     chainId,
@@ -295,10 +298,6 @@ function JoinSponsorshipModal({
                     </li>
                 </PropList>
             </Section>
-            <StyledAlert type="notice" title="Node version check">
-                Node versions 100.2.3 and below are vulnerable to slashing. Ensure that
-                all of your nodes are not running an outdated version.
-            </StyledAlert>
             {isBelowSelfFundingLimit && (
                 <StyledAlert type="error" title="Low self-funding">
                     You cannot stake on Sponsorships because your Operator is below the
@@ -317,9 +316,10 @@ function JoinSponsorshipModal({
                 </StyledAlert>
             )}
             {!isBelowSelfFundingLimit && !hasUndelegationQueue && (
-                <LiveNodesCheck
+                <LiveNodesAndVersionCheck
                     liveNodesCountLoading={liveNodesCountLoading}
                     liveNodesCount={liveNodesCount}
+                    heartbeats={heartbeats}
                 />
             )}
             {sponsorship.minimumStakingPeriodSeconds > 0 && (
@@ -343,17 +343,61 @@ function JoinSponsorshipModal({
 interface LiveNodesCheckProps {
     liveNodesCountLoading: boolean
     liveNodesCount: number
+    heartbeats: Record<string, Heartbeat | undefined>
 }
 
-function LiveNodesCheck({ liveNodesCountLoading, liveNodesCount }: LiveNodesCheckProps) {
-    if (liveNodesCountLoading) {
+function LiveNodesAndVersionCheck({
+    liveNodesCountLoading,
+    liveNodesCount,
+    heartbeats,
+}: LiveNodesCheckProps) {
+    const [hasWaitedForHeartbeats, setHasWaitedForHeartbeats] = useState(false)
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setHasWaitedForHeartbeats(true)
+        }, 6000) // Wait for 6 seconds to ensure heartbeats are available from ~all nodes
+
+        return () => clearTimeout(timer)
+    }, [])
+
+    if (!hasWaitedForHeartbeats || liveNodesCountLoading) {
         return (
             <StyledAlert type="loading" title="Checking Streamr nodes">
                 <span>
-                    In order to continue, you need to have one or more Streamr nodes
-                    running and correctly configured. You will be slashed if you stake
-                    without your nodes contributing resources to the stream.
+                    In order to continue, you need to have, 1 or more Streamr nodes
+                    running, and have them all be correctly configured. All of your nodes
+                    must be running version {requiredNodeVersion} or higher. You are
+                    vulnerable to slashing if you stake with misconfigured nodes.
                 </span>
+            </StyledAlert>
+        )
+    }
+
+    const nodeVersions = Object.values(heartbeats).map(
+        (heartbeat) => heartbeat?.applicationVersion,
+    )
+    const areAllNodesRunningRequiredVersion = nodeVersions.every((version) => {
+        // If version is undefined (old node) or null, treat it as not meeting the requirement
+        if (!version) {
+            return false
+        }
+        return isNodeVersionGreaterThanOrEqualTo(version, requiredNodeVersion)
+    })
+    if (!areAllNodesRunningRequiredVersion) {
+        return (
+            <StyledAlert type="error" title="Streamr nodes are outdated">
+                <p>
+                    The minimum required version for all of your Streamr nodes is{' '}
+                    {requiredNodeVersion} or higher. Please update your nodes.
+                </p>
+                <a
+                    href={R.docs('/guides/how-to-update-your-streamr-node/')}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                >
+                    How to upgrade a Streamr node <LinkIcon name="externalLink" />
+                </a>
             </StyledAlert>
         )
     }
