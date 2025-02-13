@@ -131,27 +131,6 @@ export async function sleep(millis: number) {
 }
 
 /**
- * Turns `abc`, `ABC`, `aBc` into `Abc`.
- */
-function titleize(value: string): string {
-    return value.toLowerCase().replace(/\w/, (firstLetter) => firstLetter.toUpperCase())
-}
-
-/**
- * Converts a string into a good-looking display-ready chain name.
- */
-export function formatChainName(chainName: string): string {
-    switch (chainName.toLowerCase()) {
-        case 'xdai':
-            return formatChainName('gnosis')
-        case 'bsc':
-            return 'Binance Smart Chain'
-        default:
-            return titleize(chainName)
-    }
-}
-
-/**
  * Takes the user back in history, but only if they've already navigated
  * somewhere within the app.
  * @param options.onBeforeNavigate Optional callback triggered right before

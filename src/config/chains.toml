@@ -1,11 +1,28 @@
+[ethereum]
+displayName = "Ethereum Mainnet"
+
+[binance]
+coingeckoNetworkId = "binance-smart-chain"
+displayName = "BNB Smart Chain"
+
+[gnosis]
+coingeckoNetworkId = "xdai"
+displayName = "Gnosis"
+
 [dev0]
+coingeckoNetworkId = "ethereum"
 dockerHost = "localhost"
+displayName = "Dev0"
 
 [dev1]
+coingeckoNetworkId = "ethereum"
 dockerHost = "localhost"
+displayName = "Dev1"
 
 [dev2]
+coingeckoNetworkId = "ethereum"
 dataUnionJoinServerUrl = ":5555"
+displayName = "Dev2"
 dockerHost = "localhost"
 marketplaceChains = ['dev2']
 networkSubgraphUrl = ":8800/subgraphs/name/streamr-dev/network-subgraphs"
@@ -21,6 +38,7 @@ name = "streamr-dev/dataunion"
 
 [polygonAmoy]
 dataUnionJoinServerUrl = "https://join.dataunions.org/"
+displayName = "Amoy"
 marketplaceChains = ['polygonAmoy']
 slug = 'amoy'
 

@@ -5,6 +5,7 @@ import config from '~/config/chains.toml'
 import formatConfigUrl from '~/utils/formatConfigUrl'
 
 const ChainConfigExtension = z.object({
+    coingeckoNetworkId: z.string().optional(),
     dataUnionJoinServerUrl: z.string().optional(),
     dataunionGraphNames: z
         .array(
@@ -15,6 +16,7 @@ const ChainConfigExtension = z.object({
         )
         .optional()
         .default([]),
+    displayName: z.string().optional(),
     dockerHost: z.string().optional(),
     ipfs: z
         .object({

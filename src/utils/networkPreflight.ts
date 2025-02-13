@@ -2,7 +2,7 @@ import { toaster } from 'toasterhea'
 import SwitchNetworkModal from '~/modals/SwitchNetworkModal'
 import { getWalletProvider } from '~/shared/stores/wallet'
 import { Layer } from '~/utils/Layer'
-import { getChainConfig } from '~/utils/chains'
+import { getChainConfig, getChainDisplayName } from '~/utils/chains'
 import getChainId from '~/utils/web3/getChainId'
 
 /**
@@ -14,15 +14,15 @@ export default async function networkPreflight(expectedChainId: number) {
     const provider = await getWalletProvider()
 
     try {
-        const currentChainId = await getChainId()
+        const actualChainId = await getChainId()
 
-        if (currentChainId === expectedChainId) {
+        if (actualChainId === expectedChainId) {
             return false
         }
 
         await toaster(SwitchNetworkModal, Layer.Modal).pop({
-            expectedNetwork: expectedChainId,
-            actualNetwork: currentChainId,
+            expectedChainId,
+            actualChainId,
         })
 
         await provider.request({
@@ -45,7 +45,7 @@ export default async function networkPreflight(expectedChainId: number) {
             params: [
                 {
                     chainId: `0x${chainConfig.id.toString(16)}`,
-                    chainName: chainConfig.name,
+                    chainName: getChainDisplayName(chainConfig.id),
                     rpcUrls: chainConfig.rpcEndpoints.map(({ url }) => url),
                     nativeCurrency: chainConfig.nativeCurrency,
                     blockExplorerUrls: [chainConfig.blockExplorerUrl].filter(

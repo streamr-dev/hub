@@ -13,8 +13,11 @@ import { ProjectType, SalePoint } from '~/shared/types'
 import { REGULAR, TABLET } from '~/shared/utils/styled'
 import { timeUnits } from '~/shared/utils/timeUnit'
 import { useIsAccessibleByCurrentWallet } from '~/stores/projectDraft'
-import { formatChainName } from '~/utils'
-import { getChainConfig, useCurrentChainId, useCurrentChainKey } from '~/utils/chains'
+import {
+    getChainDisplayName,
+    useCurrentChainId,
+    useCurrentChainKey,
+} from '~/utils/chains'
 import { Route as R, routeOptions } from '~/utils/routes'
 import { errorToast } from '~/utils/toast'
 
@@ -65,7 +68,7 @@ export function AccessManifest({
                             timeUnit={timeUnits.hour}
                         />
                     </strong>{' '}
-                    on <strong>{formatChainName(getChainConfig(chainId).name)}</strong>
+                    on <strong>{getChainDisplayName(chainId)}</strong>
                     {count > 0 && (
                         <>
                             {' '}

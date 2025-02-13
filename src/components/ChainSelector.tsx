@@ -9,18 +9,18 @@ import UnstyledNetworkIcon from '~/shared/components/NetworkIcon'
 import SvgIcon from '~/shared/components/SvgIcon'
 import { COLORS, LAPTOP } from '~/shared/utils/styled'
 import { StreamDraft } from '~/stores/streamDraft'
-import { getChainSlug, useCurrentChain } from '~/utils/chains'
+import { getChainDisplayName, getChainSlug, useCurrentChain } from '~/utils/chains'
 
 type MenuItemProps = {
-    chain: Chain
+    chainId: number
     isSelected: boolean
     onClick: () => void
 }
 
-const MenuItem = ({ chain, isSelected, onClick }: MenuItemProps) => (
+const MenuItem = ({ chainId, isSelected, onClick }: MenuItemProps) => (
     <MenuItemContainer onClick={onClick}>
-        <NetworkIcon chainId={chain.id} />
-        <div>{chain.name}</div>
+        <NetworkIcon chainId={chainId} />
+        <div>{getChainDisplayName(chainId)}</div>
         {isSelected ? <SvgIcon name="tick" /> : <div />}
     </MenuItemContainer>
 )
@@ -40,7 +40,7 @@ const Menu = ({ chains, selectedChain, toggle }: MenuProps) => {
                 {chains.map((c) => (
                     <MenuItem
                         key={c.id}
-                        chain={c}
+                        chainId={c.id}
                         isSelected={c.id === selectedChain.id}
                         onClick={() => {
                             toggle(false)
@@ -67,7 +67,7 @@ interface Props {
 }
 
 export const ChainSelector = ({ menuAlignment = 'left', ...props }: Props) => {
-    const availableChains = getEnvironmentConfig().availableChains
+    const { availableChains } = getEnvironmentConfig()
 
     const selectedChain = useCurrentChain()
 
@@ -89,7 +89,7 @@ export const ChainSelector = ({ menuAlignment = 'left', ...props }: Props) => {
             {(toggle, isOpen) => (
                 <Toggle $isOpen={isOpen} onClick={() => toggle((v) => !v)}>
                     <NetworkIcon chainId={selectedChain.id} />
-                    <div>{selectedChain.name}</div>
+                    <div>{getChainDisplayName(selectedChain.id)}</div>
                     <Caret name="caretUp" $isOpen={isOpen} />
                 </Toggle>
             )}

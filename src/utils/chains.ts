@@ -3,7 +3,6 @@ import { produce } from 'immer'
 import { useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { defaultChainKey } from '~/consts'
-import { ethereumNetworks } from '~/shared/utils/constants'
 import {
     ChainConfigExtension,
     fallbackChainConfigExtension,
@@ -67,35 +66,35 @@ export function getChainKey(candidate: string | number): ChainKey {
     return defaultChainKey
 }
 
-export function getCurrentChain() {
+export function getCurrentChain(): Chain {
     return getChainConfig(
         new URLSearchParams(window.location.search).get('chain') || defaultChainKey,
     )
 }
 
-export function getCurrentChainId() {
+export function getCurrentChainId(): number {
     return getCurrentChain().id
 }
 
-export function useCurrentChain() {
+export function useCurrentChain(): Chain {
     const chainName = useSearchParams()[0].get('chain') || defaultChainKey
 
     return useMemo(() => getChainConfig(chainName), [chainName])
 }
 
-export function useCurrentChainId() {
+export function useCurrentChainId(): number {
     return useCurrentChain().id
 }
 
-export function useCurrentChainKey() {
+export function useCurrentChainKey(): ChainKey {
     return getChainKey(useCurrentChainId())
 }
 
 /**
  * @todo rename to `useCurrentFullChainName`.
  */
-export function useCurrentChainFullName() {
-    return getChainConfig(useCurrentChainId()).name
+export function useCurrentChainFullName(): string {
+    return getChainDisplayName(useCurrentChainId())
 }
 
 interface ChainEntry {
@@ -119,8 +118,6 @@ function getChainEntry(chainKey: ChainKey): ChainEntry {
     const { dockerHost } = configExtension
 
     const sanitizedConfig = produce(config, (draft) => {
-        draft.name = ethereumNetworks[config.id] || config.name
-
         for (const rpc of draft.rpcEndpoints) {
             rpc.url = formatConfigUrl(rpc.url, {
                 dockerHost,
@@ -170,6 +167,39 @@ export function getChainSlug(chainIdOrChainKey: ChainKey | number): string {
  * @param candidate Any string.
  * @returns `true` if the given string is config's own key.
  */
-function isChainKey(candidate: string): candidate is ChainKey {
+export function isChainKey(candidate: string): candidate is ChainKey {
     return Object.prototype.hasOwnProperty.call(configs, candidate)
+}
+
+export function isKnownChainId(candidate: number): boolean {
+    return Object.entries(configs).some(([, { id }]) => id === candidate)
+}
+
+export function getChainDisplayName(chainIdOrChainKey: ChainKey | number): string {
+    const { config, configExtension } = getChainEntry(getChainKey(chainIdOrChainKey))
+
+    return configExtension.displayName || config.name
+}
+
+export function getMarketplaceChainConfigs(
+    chainIdOrChainKey: ChainKey | number,
+): Chain[] {
+    const marketplaceChainKeys = getChainEntry(getChainKey(chainIdOrChainKey))
+        .configExtension.marketplaceChains
+
+    const result: Chain[] = []
+
+    for (const key of marketplaceChainKeys) {
+        if (isChainKey(key)) {
+            result.push(getChainConfig(key))
+        }
+    }
+
+    return result
+}
+
+export function getCoingeckoNetworkId(chainIdOrChainKey: ChainKey | number) {
+    const { config, configExtension } = getChainEntry(getChainKey(chainIdOrChainKey))
+
+    return configExtension.coingeckoNetworkId || config.name
 }
