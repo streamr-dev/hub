@@ -1,4 +1,4 @@
-import { getCoingecoNetworkId } from '~/utils/chains'
+import { getCoingeckoNetworkId } from '~/utils/chains'
 
 const BASE_URL = 'https://streamr-public.s3.amazonaws.com/truswallet-assets/blockchains'
 
@@ -6,7 +6,7 @@ export const getTokenLogoUrl = (
     tokenContractAddress: string,
     chainId: number,
 ): string => {
-    const networkId = getCoingecoNetworkId(chainId)
+    const networkId = getCoingeckoNetworkId(chainId)
 
     /**
      * For more details see:

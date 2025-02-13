@@ -198,7 +198,7 @@ export function getMarketplaceChainConfigs(
     return result
 }
 
-export function getCoingecoNetworkId(chainIdOrChainKey: ChainKey | number) {
+export function getCoingeckoNetworkId(chainIdOrChainKey: ChainKey | number) {
     const { config, configExtension } = getChainEntry(getChainKey(chainIdOrChainKey))
 
     return configExtension.coingeckoNetworkId || config.name
