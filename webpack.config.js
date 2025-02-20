@@ -17,6 +17,7 @@ const { sentryWebpackPlugin } = require('@sentry/webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const createStyledComponentsTransformer =
     require('typescript-plugin-styled-components').default
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 const validateEnv = require('./scripts/validateEnv')
 const pkg = require('./package')
 const pkgLock = require('./package-lock')
@@ -131,6 +132,9 @@ module.exports = {
     },
     plugins: [
         // Common plugins between prod and dev
+        new NodePolyfillPlugin({
+            additionalAliases: ['process'],
+        }),
         new ESLintPlugin({
             extensions: ['tsx', 'ts'],
         }),
@@ -334,10 +338,6 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
         symlinks: false,
-        fallback: {
-            stream: require.resolve('stream-browserify'),
-            buffer: require.resolve('buffer'),
-        },
         alias: {
             // Make sure you set up aliases in flow and jest configs.
             $testUtils: path.resolve(__dirname, 'test/test-utils/'),
