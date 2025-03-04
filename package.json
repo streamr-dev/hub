@@ -47,7 +47,7 @@
     "@sentry/react": "^8.34.0",
     "@streamr/config": "^5.5.0",
     "@streamr/hub-contracts": "^1.1.2",
-    "@streamr/sdk": "^102.2.0-rc.0",
+    "@streamr/sdk": "^102.2.0-rc.3",
     "@streamr/streamr-icons": "^0.1.9",
     "@streamr/streamr-layout": "^2.5.3",
     "@tanstack/react-query": "^5.51.21",
