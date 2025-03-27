@@ -71,8 +71,9 @@ const useOperatorReachabilityStore = create<{
              * StreamrClient opens many WebSocket connections, often hitting
              * browser limits.
              *
-             * Since browsers handle this differently, it's hard to tell if
-             * a failure is due to node issues or connection limits.
+             * Normally, we'd attempt a real WSS connection, but since browsers
+             * handle limits differently, it's hard to tell whether a failure
+             * is due to node issues or browser constraints.
              *
              * @todo Let’s revisit this once we have a more reliable method for
              * confirming node reachability.
