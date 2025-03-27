@@ -67,30 +67,23 @@ const useOperatorReachabilityStore = create<{
                 draft.pending = true
             })
 
-            let reachable = false
+            /**
+             * StreamrClient opens many WebSocket connections, often hitting
+             * browser limits.
+             *
+             * Since browsers handle this differently, it's hard to tell if
+             * a failure is due to node issues or connection limits.
+             *
+             * @todo Let’s revisit this once we have a more reliable method for
+             * confirming node reachability.
+             */
 
-            let ws: WebSocket | undefined
-
-            try {
-                reachable = await new Promise<boolean>((resolve) => {
-                    /**
-                     * @todo Attempt the wss connections to the declared endpoints
-                     * for verification.
-                     */
-                    resolve(tls && !!port && !!host && !isIPAddress(host))
+            updateProbe(url, (draft) => {
+                Object.assign(draft, {
+                    pending: false,
+                    reachable: tls && !!port && !!host && !isIPAddress(host),
                 })
-            } finally {
-                ws?.close()
-
-                ws = undefined
-
-                updateProbe(url, (draft) => {
-                    Object.assign(draft, {
-                        pending: false,
-                        reachable,
-                    })
-                })
-            }
+            })
         },
     }
 })
