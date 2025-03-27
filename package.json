@@ -1,6 +1,6 @@
 {
   "name": "core-frontend",
-  "version": "4.13.18",
+  "version": "4.13.19",
   "description": "Streamr Hub",
   "main": "src/index.jsx",
   "scripts": {
