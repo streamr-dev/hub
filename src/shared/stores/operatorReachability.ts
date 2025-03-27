@@ -67,30 +67,24 @@ const useOperatorReachabilityStore = create<{
                 draft.pending = true
             })
 
-            let reachable = false
+            /**
+             * StreamrClient opens many WebSocket connections, often hitting
+             * browser limits.
+             *
+             * Normally, we'd attempt a real WSS connection, but since browsers
+             * handle limits differently, it's hard to tell whether a failure
+             * is due to node issues or browser constraints.
+             *
+             * @todo Let’s revisit this once we have a more reliable method for
+             * confirming node reachability.
+             */
 
-            let ws: WebSocket | undefined
-
-            try {
-                reachable = await new Promise<boolean>((resolve) => {
-                    /**
-                     * Replace the following with a real connectivity
-                     * checking logic.
-                     */
-                    resolve(!!url)
+            updateProbe(url, (draft) => {
+                Object.assign(draft, {
+                    pending: false,
+                    reachable: tls && !!port && !!host && !isIPAddress(host),
                 })
-            } finally {
-                ws?.close()
-
-                ws = undefined
-
-                updateProbe(url, (draft) => {
-                    Object.assign(draft, {
-                        pending: false,
-                        reachable,
-                    })
-                })
-            }
+            })
         },
     }
 })
@@ -151,4 +145,14 @@ export function useIsNodeIdReachable(nodeId: string) {
     const { reachable = false, pending = false } = probes[nodes[nodeId] || ''] || {}
 
     return pending ? 'pending' : reachable
+}
+
+const IPv4RegExp =
+    /^(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)){3}$/
+
+const IPv6RegExp =
+    /^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|::|([0-9a-fA-F]{1,4}:){1,7}:|:([0-9a-fA-F]{1,4}:){1,7}|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4})$/
+
+function isIPAddress(value: string): boolean {
+    return IPv4RegExp.test(value) || IPv6RegExp.test(value)
 }
