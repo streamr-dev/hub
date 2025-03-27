@@ -74,10 +74,10 @@ const useOperatorReachabilityStore = create<{
             try {
                 reachable = await new Promise<boolean>((resolve) => {
                     /**
-                     * Replace the following with a real connectivity
-                     * checking logic.
+                     * @todo Attempt the wss connections to the declared endpoints
+                     * for verification.
                      */
-                    resolve(!!url)
+                    resolve(tls && !!port && !!host && !isIPAddress(host))
                 })
             } finally {
                 ws?.close()
@@ -151,4 +151,14 @@ export function useIsNodeIdReachable(nodeId: string) {
     const { reachable = false, pending = false } = probes[nodes[nodeId] || ''] || {}
 
     return pending ? 'pending' : reachable
+}
+
+const IPv4RegExp =
+    /^(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)){3}$/
+
+const IPv6RegExp =
+    /^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|::|([0-9a-fA-F]{1,4}:){1,7}:|:([0-9a-fA-F]{1,4}:){1,7}|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4})$/
+
+function isIPAddress(value: string): boolean {
+    return IPv4RegExp.test(value) || IPv6RegExp.test(value)
 }
