@@ -17,6 +17,7 @@ const { sentryWebpackPlugin } = require('@sentry/webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const createStyledComponentsTransformer =
     require('typescript-plugin-styled-components').default
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 const validateEnv = require('./scripts/validateEnv')
 const pkg = require('./package')
 const pkgLock = require('./package-lock')
@@ -131,6 +132,9 @@ module.exports = {
     },
     plugins: [
         // Common plugins between prod and dev
+        new NodePolyfillPlugin({
+            additionalAliases: ['process'],
+        }),
         new ESLintPlugin({
             extensions: ['tsx', 'ts'],
         }),
@@ -175,122 +179,113 @@ module.exports = {
         new webpack.EnvironmentPlugin(loadedDotenv),
         ...(analyze
             ? [
-                new BundleAnalyzerPlugin({
-                    analyzerMode: 'static',
-                    openAnalyzer: false,
-                }),
-            ]
+                  new BundleAnalyzerPlugin({
+                      analyzerMode: 'static',
+                      openAnalyzer: false,
+                  }),
+              ]
             : []),
         // Ignore all locale files of moment.js
         new webpack.IgnorePlugin({
             resourceRegExp: /^\.\/locale$/,
             contextRegExp: /moment$/,
         }),
-        // Fix process is not defined error
-        new webpack.ProvidePlugin({
-            process: 'process/browser',
-        }),
-        // Work around for Buffer is undefined:
-        // https://github.com/webpack/changelog-v5/issues/10
-        new webpack.ProvidePlugin({
-            Buffer: ['buffer', 'Buffer'],
-        }),
     ]
         .concat(
             isProduction()
                 ? [
-                    new CleanWebpackPlugin({ cleanOnceBeforeBuildPatterns: [dist] }),
-                    // Production plugins
-                    // new webpack.optimize.OccurrenceOrderPlugin(), // commented out as it started throwing errors after update to webpack5
-                    new webpack.EnvironmentPlugin({
-                        NODE_ENV: 'production',
-                    }),
-                    new OptimizeCssAssetsPlugin({
-                        cssProcessor,
-                        cssProcessorOptions: {
-                            discardComments: {
-                                removeAll: true,
-                            },
-                        },
-                        canPrint: true,
-                    }),
-                    new ImageminPlugin({
-                        disable: !isProduction(), // Disable during development
-                        pngquant: {
-                            quality: '50-75',
-                        },
-                    }),
-                ]
+                      new CleanWebpackPlugin({ cleanOnceBeforeBuildPatterns: [dist] }),
+                      // Production plugins
+                      // new webpack.optimize.OccurrenceOrderPlugin(), // commented out as it started throwing errors after update to webpack5
+                      new webpack.EnvironmentPlugin({
+                          NODE_ENV: 'production',
+                      }),
+                      new OptimizeCssAssetsPlugin({
+                          cssProcessor,
+                          cssProcessorOptions: {
+                              discardComments: {
+                                  removeAll: true,
+                              },
+                          },
+                          canPrint: true,
+                      }),
+                      new ImageminPlugin({
+                          disable: !isProduction(), // Disable during development
+                          pngquant: {
+                              quality: '50-75',
+                          },
+                      }),
+                  ]
                 : [
-                    // Dev plugins
-                    new DeadCodePlugin({
-                        exclude: [
-                            '**/node_modules/**/*.*',
-                            'storybook-static/**/*.*',
-                            'dist/**/*.*',
-                            'coverage/**/*.*',
-                            // skip tests
-                            '**/tests/*.*',
-                            '**/tests/**/*.*',
-                            '**/test/*.*',
-                            '**/test/**/*.*',
-                            '**/*.test.ts',
-                            '**/*.test.tsx',
-                            // skip conditional stubs
-                            '**/stub.tsx',
-                            // skip stories
-                            '**/*.stories.*',
-                            // skip sketch files
-                            '**/*.sketch',
-                            // other files
-                            'package-lock.json',
-                            'codegen.ts',
-                            'README.md',
-                            'babel.config.js',
-                            'codegen.ts',
-                            'cypress.config.ts',
-                            'healthcheck.ts',
-                            'jest.config.js',
-                            'webpack.config.*',
-                            'nginx.conf',
-                            'src/generated/**/*.*',
-                            '*.json',
-                            'scripts/**/*.*',
-                            'cypress/**/*.*',
-                            'src/queries/*.ts',
-                            '**/*.css',
-                            'types/**/*.d.ts',
-                        ],
-                    }),
-                    new WebpackNotifierPlugin(),
-                ],
+                      // Dev plugins
+                      new DeadCodePlugin({
+                          exclude: [
+                              '**/node_modules/**/*.*',
+                              'storybook-static/**/*.*',
+                              'dist/**/*.*',
+                              'coverage/**/*.*',
+                              // skip tests
+                              '**/tests/*.*',
+                              '**/tests/**/*.*',
+                              '**/test/*.*',
+                              '**/test/**/*.*',
+                              '**/*.test.ts',
+                              '**/*.test.tsx',
+                              // skip conditional stubs
+                              '**/stub.tsx',
+                              // skip stories
+                              '**/*.stories.*',
+                              // skip sketch files
+                              '**/*.sketch',
+                              // other files
+                              'package-lock.json',
+                              'codegen.ts',
+                              'README.md',
+                              'babel.config.js',
+                              'codegen.ts',
+                              'cypress.config.ts',
+                              'healthcheck.ts',
+                              'jest.config.js',
+                              'webpack.config.*',
+                              'nginx.conf',
+                              'src/generated/**/*.*',
+                              '*.json',
+                              'scripts/**/*.*',
+                              'cypress/**/*.*',
+                              'src/queries/*.ts',
+                              '**/*.css',
+                              'types/**/*.d.ts',
+                          ],
+                      }),
+                      new WebpackNotifierPlugin(),
+                  ],
         )
         .concat(
             process.env.SENTRY_AUTH_TOKEN
                 ? [
-                    sentryWebpackPlugin({
-                        include: dist,
-                        validate: true,
-                        org: process.env.SENTRY_ORG || 'streamr',
-                        project: process.env.SENTRY_PROJECT || 'hub',
-                        authToken: process.env.SENTRY_AUTH_TOKEN,
-                        ignore: [
-                            '.cache',
-                            '.DS_STORE',
-                            '.env',
-                            '.envrc',
-                            '.storybook',
-                            'bin',
-                            'coverage',
-                            'node_modules',
-                            'scripts',
-                            'stories',
-                            'test',
-                            'webpack.config.js',
-                        ],
-                        release: process.env.VERSION,
-                    }),
-                ]
+                      sentryWebpackPlugin({
+                          include: dist,
+                          validate: true,
+                          org: process.env.SENTRY_ORG || 'streamr',
+                          project: process.env.SENTRY_PROJECT || 'hub',
+                          authToken: process.env.SENTRY_AUTH_TOKEN,
+                          ignore: [
+                              '.cache',
+                              '.DS_STORE',
+                              '.env',
+                              '.envrc',
+                              '.storybook',
+                              'bin',
+                              'coverage',
+                              'node_modules',
+                              'scripts',
+                              'stories',
+                              'test',
+                              'webpack.config.js',
+                          ],
+                          release: process.env.VERSION,
+                      }),
+                  ]
                 : [],
         ),
     devtool: isProduction() ? 'source-map' : 'eval-source-map',
@@ -334,10 +329,6 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
         symlinks: false,
-        fallback: {
-            stream: require.resolve('stream-browserify'),
-            buffer: require.resolve('buffer'),
-        },
         alias: {
             // Make sure you set up aliases in flow and jest configs.
             $testUtils: path.resolve(__dirname, 'test/test-utils/'),
