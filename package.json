@@ -126,7 +126,7 @@
     "@babel/preset-env": "^7.22.5",
     "@babel/preset-react": "^7.22.3",
     "@babel/preset-typescript": "^7.21.5",
-    "@babel/runtime": "^7.22.5",
+    "@babel/runtime": "^7.27.1",
     "@chromatic-com/storybook": "^1.9.0",
     "@cypress/webpack-preprocessor": "^5.17.1",
     "@graphql-codegen/cli": "^5.0.3",
