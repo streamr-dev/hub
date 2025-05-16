@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { isAddress } from 'web3-validator'
 import { address0 } from '~/consts'
 import PermissionEditor from '~/pages/AbstractStreamEditPage/AccessControlSection/PermissionEditor'
 import { Bits, setBits, unsetBits } from '~/parsers/StreamParser'
@@ -39,6 +38,9 @@ interface NewStreamPermissionsModalProps extends FormModalProps {
     onBeforeSubmit?: (payload: PermissionBits) => void
 }
 
+const hexStringRegex = /^0x([0-9a-fA-F]{2})+$/
+const zeroAddressRegex = /^(0x)?0+$/
+
 export default function NewStreamPermissionsModal({
     onReject,
     onResolve,
@@ -65,18 +67,14 @@ export default function NewStreamPermissionsModal({
                 )
             }}
             onSubmit={() => {
-                const account = address.toLowerCase()
+                const account = `${address.startsWith('0x') ? '' : '0x'}${address.toLowerCase()}`
 
-                if (account === address0) {
-                    return void setError('Invalid address')
+                if (zeroAddressRegex.test(account)) {
+                    return void setError('Invalid key - cannot assign to zero')
                 }
 
-                if (account.length === 0) {
-                    return void setError('Address required')
-                }
-
-                if (!isAddress(account)) {
-                    return void setError('Invalid address format')
+                if (!hexStringRegex.test(account)) {
+                    return void setError('Invalid key - must be a hex string')
                 }
 
                 const result = {
