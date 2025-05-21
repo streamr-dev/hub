@@ -78,10 +78,6 @@ export default function NewStreamPermissionsModal({
                     return void setError('Invalid key - must be a hex string')
                 }
 
-                if (permissionBits === 0) {
-                    return void setError('Please select some of the permissions')
-                }
-
                 if (!ethereumAddressRegex.test(normalizedPublicKey) && (
                     matchBits(Bits[StreamPermission.GRANT], permissionBits) ||
                     matchBits(Bits[StreamPermission.DELETE], permissionBits) ||
@@ -107,7 +103,7 @@ export default function NewStreamPermissionsModal({
 
                 onResolve?.(result)
             }}
-            canSubmit={!!publicKey}
+            canSubmit={!!publicKey && permissionBits !== 0}
             submitLabel="Authorize Public Key"
             cancelLabel={cancelLabel}
         >
