@@ -1,8 +1,12 @@
 import { truncate, truncateStreamName, parseStreamId as psi } from './text'
 describe('text utils', () => {
     describe('truncate', () => {
-        it('does not truncate non-strings', () => {
+        it('does not truncate inputs without 0x prefix', () => {
             expect(truncate('123')).toBe('123')
+        })
+
+        it('does not truncate non-hex inputs', () => {
+            expect(truncate('0xxy')).toBe('0xxy')
         })
 
         it('does not truncate hashes that are too short', () => {
@@ -11,6 +15,21 @@ describe('text utils', () => {
             )
             expect(truncate('0x0123456789abcdef0123456789abcdef0123456')).toBe(
                 '0x0123456789abcdef0123456789abcdef0123456',
+            )
+        })
+
+        it('has configurable truncateLongerThan threshold', () => {
+            expect(truncate('0x0123456789abcdef0123456789abcdef01234567890', 100)).toBe(
+                '0x0123456789abcdef0123456789abcdef01234567890',
+            )
+            expect(truncate('0x0123456789abcdef0123456789abcdef01234567890', 40)).toBe(
+                '0x012...67890',
+            )
+        })
+
+        it('has configurable pickFirst and pickLast parameters', () => {
+            expect(truncate('0x0123456789abcdef0123456789abcdef01234567890', 40, 10, 10)).toBe(
+                '0x01234567...1234567890',
             )
         })
 
