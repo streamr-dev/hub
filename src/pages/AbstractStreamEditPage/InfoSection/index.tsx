@@ -48,7 +48,7 @@ export function InfoSection({ disabled: disabledProp = false }) {
                 All streams have a unique id in the format{' '}
                 <strong>domain/pathname</strong>.
                 <Surround head=" " tail=" ">
-                    The domain part can be your wallet address or an ENS name you own.
+                    The domain part can be your Ethereum address or an ENS name you own.
                 </Surround>
                 <Surround>
                     <a
