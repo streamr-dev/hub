@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { StreamPermission } from '@streamr/sdk'
 import PermissionEditor from '~/pages/AbstractStreamEditPage/AccessControlSection/PermissionEditor'
 import { Bits, matchBits, setBits, unsetBits } from '~/parsers/StreamParser'
 import UnstyledErrors, { MarketplaceTheme } from '~/shared/components/Ui/Errors'
@@ -8,7 +9,6 @@ import Text from '~/shared/components/Ui/Text'
 import { COLORS, TABLET } from '~/shared/utils/styled'
 import { RejectionReason, isMessagedObject } from '~/utils/exceptions'
 import FormModal, { FormModalProps } from './FormModal'
-import { StreamPermission } from '@streamr/sdk'
 
 const Separator = styled.div`
     border-bottom: 1px solid ${COLORS.Border};
