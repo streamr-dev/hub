@@ -10,12 +10,12 @@ import UnstyledPermissionEditor from './PermissionEditor'
 
 type Props = {
     disabled?: boolean
-    address: string
+    publicKey: string
     permissionBits: number
 }
 
 export function PermissionItem(props: Props) {
-    const { disabled = false, address, permissionBits } = props
+    const { disabled = false, publicKey, permissionBits } = props
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -35,12 +35,12 @@ export function PermissionItem(props: Props) {
                     setIsOpen((prev) => !prev)
                 }}
             >
-                {isOpen ? address : truncate(address)}
+                {isOpen ? truncate(publicKey, 50, 20, 20) : truncate(publicKey)}
                 {isOpen ? (
                     <div />
                 ) : (
                     <Labels>
-                        {account?.toLowerCase() === address.toLowerCase() && (
+                        {account?.toLowerCase() === publicKey.toLowerCase() && (
                             <YouLabel>You</YouLabel>
                         )}
                         {operations.map((op) => (
@@ -54,16 +54,16 @@ export function PermissionItem(props: Props) {
             </Title>
             {isOpen && (
                 <PermissionEditor
-                    address={address}
+                    publicKey={publicKey}
                     permissionBits={permissionBits}
                     disabled={disabled}
                     onChange={(permission, enabled) => {
                         update((hot, cold) => {
-                            if (cold.permissions[address] == null) {
-                                cold.permissions[address] = 0
+                            if (cold.permissions[publicKey] == null) {
+                                cold.permissions[publicKey] = 0
                             }
 
-                            hot.permissions[address] = (enabled ? setBits : unsetBits)(
+                            hot.permissions[publicKey] = (enabled ? setBits : unsetBits)(
                                 permissionBits,
                                 Bits[permission],
                             )

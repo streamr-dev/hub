@@ -24,7 +24,7 @@ const Label = styled.label<LabelProps>`
 type Props = {
     operationName: string
     value: boolean
-    address: string
+    publicKey: string
     onChange: (value: boolean) => void
     disabled?: boolean
 }
@@ -32,13 +32,13 @@ type Props = {
 const Checkbox: React.FC<Props> = ({
     operationName,
     value,
-    address,
+    publicKey,
     onChange,
     disabled,
 }) => {
     const uniqueKey = useMemo(
-        () => uniqueId(`${operationName}-${address}-`),
-        [operationName, address],
+        () => uniqueId(`${operationName}-${publicKey}-`),
+        [operationName, publicKey],
     )
 
     return (

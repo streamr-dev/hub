@@ -25,7 +25,7 @@ export function PermissionList({ disabled = false }) {
                     key !== address0 && (
                         <PermissionItem
                             key={key}
-                            address={key}
+                            publicKey={key}
                             permissionBits={bits || 0}
                             disabled={disabled}
                         />
@@ -33,7 +33,7 @@ export function PermissionList({ disabled = false }) {
             )}
             <Footer>
                 <span>
-                    {count} Ethereum account{count === 1 ? '' : 's'}
+                    {count} Public Key{count === 1 ? '' : 's'}
                 </span>
                 <Button
                     kind="primary"
@@ -42,36 +42,36 @@ export function PermissionList({ disabled = false }) {
                     outline
                     onClick={async () => {
                         try {
-                            const { account, bits } = await toaster(
+                            const { publicKey, bits } = await toaster(
                                 NewStreamPermissionsModal,
                                 Layer.Modal,
                             ).pop({
                                 onBeforeSubmit(payload) {
-                                    if (permissions[payload.account] != null) {
+                                    if (permissions[payload.publicKey] != null) {
                                         throw new Error(
-                                            'Permissions for this address already exist',
+                                            'Permissions for this public key already exist',
                                         )
                                     }
                                 },
                             })
 
                             update((hot, cold) => {
-                                if (cold.permissions[account] == null) {
-                                    cold.permissions[account] = 0
+                                if (cold.permissions[publicKey] == null) {
+                                    cold.permissions[publicKey] = 0
                                 }
 
-                                hot.permissions[account] = bits
+                                hot.permissions[publicKey] = bits
                             })
                         } catch (e) {
                             if (isAbandonment(e)) {
                                 return
                             }
 
-                            console.warn('Could not add permissions for a new account', e)
+                            console.warn('Could not add permissions for a new public key', e)
                         }
                     }}
                 >
-                    Add a new account
+                    Add Public Key
                 </Button>
             </Footer>
         </Container>
