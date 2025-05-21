@@ -114,7 +114,7 @@ export default function NewStreamPermissionsModal({
                         setPublicKey(value)
                         setError('')
                     }}
-                    placeholder="Public key or Ethereum address"
+                    placeholder="Hex public key or Ethereum address"
                 />
                 {!!error && (
                     <Errors theme={MarketplaceTheme} overlap>
