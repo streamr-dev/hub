@@ -33,7 +33,7 @@ const Column = styled.div`
 `
 
 type Props = {
-    address: string
+    publicKey: string
     permissionBits: number
     disabled?: boolean
     editor?: boolean
@@ -41,7 +41,7 @@ type Props = {
 }
 
 function UnstyledPermissionEditor({
-    address,
+    publicKey,
     permissionBits,
     disabled,
     onChange,
@@ -53,7 +53,7 @@ function UnstyledPermissionEditor({
                 <span>Read</span>
                 <Checkbox
                     operationName="Subscribe"
-                    address={address}
+                    publicKey={publicKey}
                     value={matchBits(Bits[StreamPermission.SUBSCRIBE], permissionBits)}
                     onChange={(value) => onChange(StreamPermission.SUBSCRIBE, value)}
                     disabled={disabled}
@@ -63,7 +63,7 @@ function UnstyledPermissionEditor({
                 <span>Write</span>
                 <Checkbox
                     operationName="Publish"
-                    address={address}
+                    publicKey={publicKey}
                     value={matchBits(Bits[StreamPermission.PUBLISH], permissionBits)}
                     onChange={(value) => onChange(StreamPermission.PUBLISH, value)}
                     disabled={disabled}
@@ -73,21 +73,21 @@ function UnstyledPermissionEditor({
                 <span>Manage</span>
                 <Checkbox
                     operationName="Grant"
-                    address={address}
+                    publicKey={publicKey}
                     value={matchBits(Bits[StreamPermission.GRANT], permissionBits)}
                     onChange={(value) => onChange(StreamPermission.GRANT, value)}
                     disabled={disabled}
                 />
                 <Checkbox
                     operationName="Edit"
-                    address={address}
+                    publicKey={publicKey}
                     value={matchBits(Bits[StreamPermission.EDIT], permissionBits)}
                     onChange={(value) => onChange(StreamPermission.EDIT, value)}
                     disabled={disabled}
                 />
                 <Checkbox
                     operationName="Delete"
-                    address={address}
+                    publicKey={publicKey}
                     value={matchBits(Bits[StreamPermission.DELETE], permissionBits)}
                     onChange={(value) => onChange(StreamPermission.DELETE, value)}
                     disabled={disabled}

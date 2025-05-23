@@ -17,9 +17,9 @@ export function AccessControlSection({ disabled: disabledProp = false }) {
     return (
         <Section title="Access control">
             <p>
-                You can make your stream public, or grant access to specific Ethereum
-                accounts. Learn more about stream access control from the{' '}
-                <a href={R.docs()}>docs</a>.
+                You can make your stream public, or grant access to holders of specific cryptographic keys.
+                Learn more about stream access control and permissions from the{' '}
+                <a href={R.docs('/usage/streams/permissions/')}>docs</a>.
             </p>
             <StreamTypeSelector disabled={disabled} />
             <PermissionList disabled={disabled} />

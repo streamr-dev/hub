@@ -80,7 +80,7 @@ export function StreamTypeSelector({ disabled }: Props) {
                     <div>
                         <Title>Private subscribe</Title>
                         <Description>
-                            Only Ethereum accounts listed below can read/subscribe to the
+                            Only the keys listed below can read/subscribe to the
                             stream.
                         </Description>
                     </div>

@@ -68,7 +68,7 @@ jobs:
       - name: Start Streamr Docker Stack
         uses: streamr-dev/streamr-docker-dev-action@v1.0.1
         with:
-          services-to-start: "cassandra mysql nginx entry-point broker-node-storage-1 broker-node-no-storage-1 broker-node-no-storage-2 dev-chain-fast postgres-fastchain"
+          services-to-start: "cassandra mysql entry-point broker-node-storage-1 broker-node-no-storage-1 broker-node-no-storage-2 dev-chain-fast postgres-fastchain"
       - name: Run Jest Tests
         run: echo $CHUNKS | jq '.[${{ matrix.chunk }}] | .[] | @text' | xargs npx jest --verbose --useStderr --forceExit --coverage=false --logHeapUsage --runInBand
         env:

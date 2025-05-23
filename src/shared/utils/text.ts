@@ -1,13 +1,14 @@
-export const truncate = (path: string): string => {
-    const shortenedAddress =
-        typeof path !== 'string'
-            ? path
-            : path.replace(
-                  /0x[a-f\d]{40,}/gi,
+export const truncate = (input: string, truncateLongerThan: number = 40, pickFirst: number = 5, pickLast: number = 5): string => {
+    const regex = new RegExp(`0x[a-f\\d]{${truncateLongerThan},}`, 'gi');
+    const shortenedInput =
+        typeof input !== 'string'
+            ? input
+            : input.replace(
+                  regex,
                   (match) =>
-                      `${match.substr(0, 5)}...${match.substring(match.length - 5)}`,
-              )
-    return shortenedAddress
+                      `${match.substr(0, pickFirst)}...${match.substring(match.length - pickLast)}`,
+              );
+    return shortenedInput;
 }
 
 export function truncateNodeId(nodeId: string) {
