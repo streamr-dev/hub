@@ -20,10 +20,10 @@ export const DisclaimerBar = () => {
         <Root>
             <SvgIcon name="infoBadge" />
             <div>
-                Streamr risk disclaimer: The sponsorship, staking & delegation smart
-                contracts are unproven technology, participate at your own risk.{' '}
+                Smart contracts enable sponsorship, staking, and delegation — your capital
+                is at risk.{' '}
                 <a
-                    href={R.docs('/streamr-testnets/testnets')}
+                    href={R.docs('/guides/how-to-stake-and-earn')}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={async (e) => {
@@ -34,15 +34,16 @@ export const DisclaimerBar = () => {
                                 title: 'Disclaimer',
                                 children: (
                                     <p>
-                                        The Streamr 1.0 testnets involve new, unproven
-                                        technology including smart contracts and new
-                                        protocols, which contain inherent risks. Users
-                                        should conduct thorough research before engaging,
-                                        and participate at their own risk. Participation
-                                        can result in irreversible loss of funds. Exercise
-                                        caution. Never share your private key with anyone.{' '}
+                                        Streamr’s operator, sponsorship, staking, and
+                                        delegation smart contracts carry inherent risks.
+                                        Do your own research and participate at your own
+                                        risk — funds may be irreversibly lost. Always stay
+                                        cautious and never share your private key. There
+                                        is no support desk, so beware of scammers
+                                        pretending to offer help or asking you to use apps
+                                        that could drain your wallet.{' '}
                                         <a
-                                            href={R.docs('/streamr-testnets/testnets')}
+                                            href={R.docs('/guides/how-to-stake-and-earn')}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >
