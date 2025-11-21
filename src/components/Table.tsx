@@ -55,6 +55,7 @@ const OperatorName = styled.div<{ $truncate?: boolean }>`
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            max-width: 12rem;
         `}
 `
 

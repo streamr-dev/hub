@@ -331,6 +331,7 @@ function OperatorsTable({
                             operatorId={id}
                             operatorName={name}
                             imageUrl={imageUrl}
+                            truncate={!!name}
                         />
                     ),
                     align: 'start',
