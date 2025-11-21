@@ -244,6 +244,7 @@ function DelegationsTable({
                             operatorId={id}
                             operatorName={name}
                             imageUrl={imageUrl}
+                            truncate={!!name}
                         />
                     ),
                     align: 'start',
@@ -331,6 +332,7 @@ function OperatorsTable({
                             operatorId={id}
                             operatorName={name}
                             imageUrl={imageUrl}
+                            truncate={!!name}
                         />
                     ),
                     align: 'start',
