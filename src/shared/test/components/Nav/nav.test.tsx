@@ -14,6 +14,10 @@ import { useWalletAccount, useEns } from '~/shared/stores/wallet'
 jest.mock('@streamr/dht/dist/src/connection/webrtc/NodeWebrtcConnection', () =>
     require('@streamr/dht/dist/src/connection/webrtc/BrowserWebrtcConnection'),
 )
+jest.mock('@streamr/utils/dist/src/crossPlatformCrypto',     () => ({
+    __esModule: true,
+    getSubtle: jest.fn(),
+}))
 
 jest.mock('~/shared/stores/wallet', () => ({
     __esModule: true,
