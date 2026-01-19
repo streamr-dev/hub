@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, RenderResult, screen } from '@testing-library/react'
@@ -16,7 +17,7 @@ jest.mock('@streamr/dht/dist/src/connection/webrtc/NodeWebrtcConnection', () =>
 )
 jest.mock('@streamr/utils/dist/src/crossPlatformCrypto',     () => ({
     __esModule: true,
-    getSubtle: jest.fn(),
+    getSubtle: () => crypto.webcrypto.subtle,
 }))
 
 jest.mock('~/shared/stores/wallet', () => ({
