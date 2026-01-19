@@ -26,9 +26,7 @@ export default function getClientConfig(
         ethereumNetwork: {
             chainId,
         },
-        rpcs: chainConfig.rpcEndpoints.map(rpc => ({
-            url: rpc.url,
-        })),
+        rpcs: chainConfig.rpcEndpoints.slice(0, 1),
         streamRegistryChainAddress: getContractAddress('streamRegistry', chainId),
         streamStorageRegistryChainAddress: getContractAddress('streamStorage', chainId),
         theGraphUrl: getGraphUrl(chainId),

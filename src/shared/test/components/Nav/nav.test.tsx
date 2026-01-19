@@ -1,4 +1,3 @@
-import crypto from 'crypto'
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, RenderResult, screen } from '@testing-library/react'
@@ -15,10 +14,6 @@ import { useWalletAccount, useEns } from '~/shared/stores/wallet'
 jest.mock('@streamr/dht/dist/src/connection/webrtc/NodeWebrtcConnection', () =>
     require('@streamr/dht/dist/src/connection/webrtc/BrowserWebrtcConnection'),
 )
-jest.mock('@streamr/utils/dist/src/crossPlatformCrypto',     () => ({
-    __esModule: true,
-    getSubtle: () => crypto.webcrypto.subtle,
-}))
 
 jest.mock('~/shared/stores/wallet', () => ({
     __esModule: true,
