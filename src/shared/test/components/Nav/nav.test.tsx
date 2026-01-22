@@ -4,17 +4,6 @@ import { render, RenderResult, screen } from '@testing-library/react'
 import Nav from '~/components/Nav'
 import { useWalletAccount, useEns } from '~/shared/stores/wallet'
 
-/**
- * Jest, even when using the `jsdom` environment, does not respect the `browser` field
- * or `exports.*.browser` overrides in `package.json`. This means that Node-specific files
- * from `@streamr/*` are not automatically swapped for their browser-friendly alternatives.
- *
- * To ensure the correct files are used in tests, the following mapping is required.
- */
-jest.mock('@streamr/dht/dist/src/connection/webrtc/NodeWebrtcConnection', () =>
-    require('@streamr/dht/dist/src/connection/webrtc/BrowserWebrtcConnection'),
-)
-
 jest.mock('~/shared/stores/wallet', () => ({
     __esModule: true,
     useWalletAccount: jest.fn(),

@@ -35,7 +35,8 @@ export async function getStreamrClientInstance(
  * Returns StreamrClient class.
  */
 async function getStreamrClient() {
-    return (await import('@streamr/sdk')).default
+    const { StreamrClient } = await import('@streamr/sdk')
+    return StreamrClient
 }
 
 // Load the client library proactively so that we don't have to wait later.
