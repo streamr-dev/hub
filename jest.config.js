@@ -6,10 +6,13 @@ module.exports = {
             'ts-jest',
             {
                 tsconfig: 'tsconfig.test.json',
+                isolatedModules: true,
             },
         ],
     },
-    transformIgnorePatterns: ['<rootDir>/node_modules/(?!query-string/)'],
+    transformIgnorePatterns: [
+        '<rootDir>/node_modules/(?!(query-string|@noble/hashes|@noble/curves|@streamr)/)',
+    ],
     testEnvironment: './test/test-utils/env',
     collectCoverage: true,
     coverageProvider: 'v8',
