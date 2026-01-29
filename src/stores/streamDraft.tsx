@@ -1,7 +1,8 @@
-import StreamrClient, {
+import type {
     PermissionAssignment,
     Stream,
     StreamPermission,
+    StreamrClient,
 } from '@streamr/sdk'
 import { useQuery } from '@tanstack/react-query'
 import isEqual from 'lodash/isEqual'
