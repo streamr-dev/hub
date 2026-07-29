@@ -115,7 +115,7 @@ export const Navbar = styled.div`
 `
 export const MenuGrid = styled.div`
     display: grid;
-    grid-template-columns: 1fr auto auto auto 1fr;
+    grid-template-columns: 1fr auto auto 1fr;
     justify-content: center;
     align-items: center;
 `

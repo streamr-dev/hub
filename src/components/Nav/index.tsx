@@ -69,11 +69,7 @@ const UnstyledDesktopNav: FunctionComponent = (props) => {
                 <MenuGrid data-desktop-only>
                     <div />
                     <NavbarItem>
-                        <NavbarLinkDesktop highlight={pathname.startsWith(R.projects())}>
-                            <NavLink as={Link} to={R.projects(routeOptions(chainKey))}>
-                                Projects
-                            </NavLink>
-                        </NavbarLinkDesktop>
+                        <Dropdown />
                     </NavbarItem>
                     <NavbarItem>
                         <NavbarLinkDesktop highlight={pathname.startsWith(R.streams())}>
@@ -81,9 +77,6 @@ const UnstyledDesktopNav: FunctionComponent = (props) => {
                                 Streams
                             </NavLink>
                         </NavbarLinkDesktop>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Dropdown />
                     </NavbarItem>
                     <ChainSelector menuAlignment="right" />
                 </MenuGrid>
@@ -224,17 +217,12 @@ const UnstyledMobileNav: FunctionComponent<{ className?: string }> = ({ classNam
                         <Avatarless data-testid={'avatarless'} source={account} />
                     </UserInfoMobile>
                 )}
-                <NavbarLinkMobile highlight={pathname.startsWith(R.projects())}>
-                    <NavLink as={Link} to={R.projects(routeOptions(chainKey))}>
-                        Projects
-                    </NavLink>
-                </NavbarLinkMobile>
+                <NetworkAccordion />
                 <NavbarLinkMobile highlight={pathname.startsWith(R.streams())}>
                     <NavLink as={Link} to={R.streams(routeOptions(chainKey))}>
                         Streams
                     </NavLink>
                 </NavbarLinkMobile>
-                <NetworkAccordion />
             </NavOverlay.Body>
             <NavOverlay.Footer>
                 {!!account ? (

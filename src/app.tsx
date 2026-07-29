@@ -138,13 +138,13 @@ const Root = () => (
                     </Route>
                     <Route path="overview" element={<NetworkOverviewPage />} />
                 </Route>
-                <Route path="/" element={<Navigate to={R.projects()} replace />} />
+                <Route path="/" element={<Navigate to={R.operators()} replace />} />
                 <Route
                     path="/hub"
                     element={
                         <Navigate
                             to={{
-                                pathname: R.projects(),
+                                pathname: R.operators(),
                                 search: window.location.search,
                             }}
                             replace
