@@ -1,7 +1,7 @@
 import JiraFailedBuildStatusIcon from '@atlaskit/icon/glyph/jira/failed-build-status'
 import { useQuery } from '@tanstack/react-query'
 import moment from 'moment'
-import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import {
@@ -342,9 +342,7 @@ export const OperatorPage = () => {
                     <OperatorActionBar operator={operator} />
                     <OperatorDetails operator={operator} />
                     <OperatorSummary operator={operator} />
-                    {isOwner && (
-                        <OperatorVersionNotice version={operator.contractVersion} />
-                    )}
+                    <OperatorVersionNotice version={operator.contractVersion} />
                 </>
             )}
             <LayoutColumn>
@@ -766,56 +764,16 @@ interface OperatorVersionNoticeProps {
 function OperatorVersionNotice(params: OperatorVersionNoticeProps) {
     const { version } = params
 
-    let notice: ReactNode | undefined
-
-    if (version === 0) {
-        notice = (
-            <>
-                Your Operator smart contract is outdated.{' '}
-                <a
-                    href={R.docs(
-                        '/help/operator-faq#migrating-from-streamr-10-testnet-to-streamr-10',
-                    )}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                >
-                    Click here
-                </a>{' '}
-                to learn how to migrate to the latest version.
-            </>
-        )
-    }
-
-    if (version === 1) {
-        notice = (
-            <>
-                You have a version of the Operator smart contract where withdrawals and
-                undelegations are broken.
-                <br />
-                The tokens within the Operator can be recovered. Please see{' '}
-                <a
-                    href="https://discord.com/channels/801574432350928907/1169745015363338300/1214980272123019264"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    these instructions
-                </a>{' '}
-                or get in touch with the team.
-            </>
-        )
-    }
-
-    if (version < 4) {
-        notice = (
-            <>
-                This Operator smart contract version is vulnerable and tokens may get stolen. Please withdraw all tokens.
-            </>
-        )
-    }
-
-    if (!notice) {
+    if (version >= 4) {
         return null
     }
+
+    const notice = (
+        <>
+            This Operator smart contract version is vulnerable and tokens may get stolen.
+            Please withdraw all tokens.
+        </>
+    )
 
     return (
         <NoticeBar>
