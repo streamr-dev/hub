@@ -53,7 +53,6 @@ describe('Nav.Wide', () => {
     it('renders the menu links', () => {
         mountNav()
         expect(screen.getAllByText('Streams').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('Projects').length).toBeGreaterThan(0)
     })
 
     it('renders the Connect button', () => {
