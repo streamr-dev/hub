@@ -805,6 +805,14 @@ function OperatorVersionNotice(params: OperatorVersionNoticeProps) {
         )
     }
 
+    if (version < 4) {
+        notice = (
+            <>
+                This Operator smart contract version is vulnerable and tokens may get stolen. Please withdraw all tokens.
+            </>
+        )
+    }
+
     if (!notice) {
         return null
     }
