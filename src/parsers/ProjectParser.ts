@@ -219,7 +219,7 @@ export function parseProject(value: unknown, options: ParseProjectOptions) {
                 description,
                 id,
                 imageIpfsCid,
-                imageUrl: getProjectImageUrl(chainId, { imageUrl, imageIpfsCid }),
+                imageUrl: getProjectImageUrl({ imageUrl, imageIpfsCid }),
                 isDataUnion,
                 name,
                 newImageToUpload: undefined,

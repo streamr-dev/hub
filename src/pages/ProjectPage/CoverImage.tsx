@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import ImageFilePicker from '~/components/ImageFilePicker'
 import { COLORS, DESKTOP } from '~/shared/utils/styled'
 import PngIcon from '~/shared/components/PngIcon'
+import { getImageCrossOrigin } from '~/utils/ipfs'
 
 const Radius = 16
 
@@ -41,7 +42,11 @@ export default function CoverImage({
                     {src && (
                         <>
                             <Preview as="div" />
-                            <Preview src={src} alt="New image" />
+                            <Preview
+                                src={src}
+                                alt="New image"
+                                crossOrigin={getImageCrossOrigin(src)}
+                            />
                         </>
                     )}
                 </Dropzone>

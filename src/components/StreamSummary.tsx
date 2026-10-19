@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components'
 import { z } from 'zod'
 import { COLORS, TABLET } from '~/shared/utils/styled'
 import { getStreamGptApiUrl } from '~/utils'
-import { getChainConfigExtension } from '~/utils/chains'
+import { getImageCrossOrigin, getIpfsGatewayUrl } from '~/utils/ipfs'
 import { LayoutColumn } from './Layout'
 import { StreamStats } from './Stats'
 
@@ -63,7 +63,12 @@ export function StreamSummary(props: StreamSummaryProps) {
                                     {info.imageUrl && (
                                         <div>
                                             {info.imageUrl && (
-                                                <StreamImage src={info.imageUrl} />
+                                                <StreamImage
+                                                    src={info.imageUrl}
+                                                    crossOrigin={getImageCrossOrigin(
+                                                        info.imageUrl,
+                                                    )}
+                                                />
                                             )}
                                         </div>
                                     )}
@@ -136,11 +141,6 @@ function useStreamSummaryQuery(streamId: string) {
                 getStreamGptApiUrl(`streams/${encodeURIComponent(streamId)}`),
             )
 
-            /**
-             * The GPT only processes streams on the Polygon network (137).
-             */
-            const { ipfsGatewayUrl } = getChainConfigExtension(137).ipfs
-
             return z
                 .object({
                     about: z.string(),
@@ -155,7 +155,7 @@ function useStreamSummaryQuery(streamId: string) {
                     usage: z.string(),
                 })
                 .transform(({ imageHash, ...rest }) => ({
-                    imageUrl: imageHash ? `${ipfsGatewayUrl}${imageHash}` : null,
+                    imageUrl: imageHash ? getIpfsGatewayUrl(imageHash) : null,
                     ...rest,
                 }))
                 .parse(await resp.json())

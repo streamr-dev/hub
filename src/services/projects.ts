@@ -226,21 +226,18 @@ export async function getProjectsByText(text: string, params: GetProjectsParams)
     return prepareProjectResult(projects as unknown as TheGraphProject[], first)
 }
 
-async function formatMetadata(
-    chainId: number,
-    {
-        contact: contactDetails,
-        creator,
-        description,
-        imageIpfsCid: existingImageIpfsCid,
-        newImageToUpload,
-        name,
-        termsOfUse,
-        type,
-    }: PublishableProjectPayload,
-) {
+async function formatMetadata({
+    contact: contactDetails,
+    creator,
+    description,
+    imageIpfsCid: existingImageIpfsCid,
+    newImageToUpload,
+    name,
+    termsOfUse,
+    type,
+}: PublishableProjectPayload) {
     const imageIpfsCid = newImageToUpload
-        ? await postImage(chainId, newImageToUpload)
+        ? await postImage(newImageToUpload)
         : existingImageIpfsCid
 
     return JSON.stringify({
@@ -255,8 +252,6 @@ async function formatMetadata(
 }
 
 export async function getPublishableProjectProperties(project: ParsedProject) {
-    const { chainId } = project
-
     const payload = PublishableProjectPayload.parse(project)
 
     const salePoints = Object.values(payload.salePoints)
@@ -320,7 +315,7 @@ export async function getPublishableProjectProperties(project: ParsedProject) {
         })
     }
 
-    const metadata = await formatMetadata(chainId, payload)
+    const metadata = await formatMetadata(payload)
 
     return {
         adminFee:

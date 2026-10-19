@@ -12,7 +12,7 @@ import { HubAvatar, HubImageAvatar } from '~/shared/components/AvatarImage'
 import { COLORS, MEDIUM } from '~/shared/utils/styled'
 import { truncate, truncateStreamName } from '~/shared/utils/text'
 import { getStreamGptApiUrl } from '~/utils'
-import { getChainConfigExtension } from '~/utils/chains'
+import { getIpfsGatewayUrl } from '~/utils/ipfs'
 import { getSponsorshipStakeForOperator } from '~/utils/sponsorships'
 import Spinner from './Spinner'
 import { OperatorAvatar } from './avatars'
@@ -143,17 +143,12 @@ function useStreamImageUrlQuery(streamId: string | undefined) {
                 return null
             }
 
-            /**
-             * The GPT only processes streams on the Polygon network (137).
-             */
-            const { ipfsGatewayUrl } = getChainConfigExtension(137).ipfs
-
             return z
                 .object({
                     imageHash: z.string(),
                 })
                 .transform(({ imageHash }) =>
-                    imageHash ? `${ipfsGatewayUrl}${imageHash}` : null,
+                    imageHash ? getIpfsGatewayUrl(imageHash) : null,
                 )
                 .parse(await resp.json())
         },

@@ -40,6 +40,7 @@ import {
     isRejectionReason,
     isTransactionRejection,
 } from '~/utils/exceptions'
+import { getImageCrossOrigin } from '~/utils/ipfs'
 
 interface Props extends Pick<FormModalProps, 'onReject'> {
     chainId: number
@@ -669,7 +670,10 @@ function OperatorModal({ onResolve, onReject, operator, chainId, ...props }: Pro
                             <AvatarField>
                                 <AvatarDisplayContainer>
                                     {imageBlob ? (
-                                        <OperatorAvatar src={imageBlob} />
+                                        <OperatorAvatar
+                                            src={imageBlob}
+                                            crossOrigin={getImageCrossOrigin(imageBlob)}
+                                        />
                                     ) : (
                                         <AvatarPlaceholder username={randomAddress} />
                                     )}

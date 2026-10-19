@@ -43,6 +43,8 @@ jobs:
           SENTRY_DSN: https://d8374218c009438e961ba15b07c7f893@o151964.ingest.sentry.io/4504950164946944
           TEST_HOOKS: off
           ENS_GRAPH_SCHEMA_PATH: ${{ secrets.ENS_GRAPH_SCHEMA_PATH }}
+          PINATA_JWT: ${{ secrets.PINATA_JWT }}
+          PINATA_GATEWAY_URL: ${{ secrets.PINATA_GATEWAY_URL }}
         run: |
           npm run build --if-present
       - name: Configure AWS credentials
