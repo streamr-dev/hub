@@ -47,6 +47,8 @@ Optional config values:
 | GTM_ID               | Google Tag Manager Identifier                                                                  |
 | STORYBOOK_BASE_PATH  | Build path for Storybook stories                                                               |
 | PLATFORM_PUBLIC_PATH | Public path for Webpack config. If not defined, relative paths are used.                       |
+| PINATA_JWT           | Pinata API key JWT (scope: Files → Write). Required for image uploads (Operator & project images). |
+| PINATA_GATEWAY_URL   | Pinata dedicated gateway base URL, e.g. `https://example.mypinata.cloud/ipfs/`. The gateway is expected to use a Host Origin access control, so leave this unset for local development to fall back to Pinata's rate-limited public gateway. |
 
 ### Backend
 

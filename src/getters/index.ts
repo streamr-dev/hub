@@ -82,8 +82,8 @@ import { ProjectType } from '~/shared/types'
 import { ChartPeriod } from '~/types'
 import { Layer } from '~/utils/Layer'
 import { BN, toBN, toBigInt } from '~/utils/bn'
-import { getChainConfigExtension } from '~/utils/chains'
 import { getContractAbi, getContractAddress } from '~/utils/contracts'
+import { getIpfsCidFromUrl, getIpfsGatewayUrl } from '~/utils/ipfs'
 import { getPublicProvider } from '~/utils/providers'
 import { errorToast } from '~/utils/toast'
 
@@ -231,27 +231,28 @@ export function getProjectTypeTitle(projectType: ProjectType): string {
     }
 }
 
-export function getProjectImageUrl(
-    chainId: number,
-    {
-        imageUrl,
-        imageIpfsCid,
-    }: {
-        imageUrl?: string
-        imageIpfsCid?: string
-    },
-): string | undefined {
-    const { ipfsGatewayUrl } = getChainConfigExtension(chainId).ipfs
-
+export function getProjectImageUrl({
+    imageUrl,
+    imageIpfsCid,
+}: {
+    imageUrl?: string
+    imageIpfsCid?: string
+}): string | undefined {
     if (imageIpfsCid) {
-        return `${ipfsGatewayUrl}${imageIpfsCid}`
+        return getIpfsGatewayUrl(imageIpfsCid)
     }
 
     if (!imageUrl) {
         return
     }
 
-    return `${imageUrl.replace(/^https:\/\/ipfs\.io\/ipfs\//, ipfsGatewayUrl)}`
+    /**
+     * Legacy projects carry a full IPFS gateway URL instead of a CID. Route
+     * those through our own gateway, too.
+     */
+    const cid = getIpfsCidFromUrl(imageUrl)
+
+    return cid ? getIpfsGatewayUrl(cid) : imageUrl
 }
 
 export async function getAllSponsorships({

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { ParseError } from '~/errors'
 import { Parsable } from '~/parsers/Parsable'
-import { getChainConfigExtension } from '~/utils/chains'
+import { getIpfsGatewayUrl } from '~/utils/ipfs'
 
 const RawOperatorMetadata = z
     .union([
@@ -93,11 +93,9 @@ export class OperatorMetadata extends Parsable<RawOperatorMetadata> {
     }
 
     get imageUrl() {
-        const { imageIpfsCid, chainId } = this
+        const { imageIpfsCid } = this
 
-        const { ipfsGatewayUrl } = getChainConfigExtension(chainId).ipfs
-
-        return imageIpfsCid && `${ipfsGatewayUrl}${imageIpfsCid}`
+        return imageIpfsCid && getIpfsGatewayUrl(imageIpfsCid)
     }
 
     get redundancyFactor() {

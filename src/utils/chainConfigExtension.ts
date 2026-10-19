@@ -18,20 +18,6 @@ const ChainConfigExtension = z.object({
         .default([]),
     displayName: z.string().optional(),
     dockerHost: z.string().optional(),
-    ipfs: z
-        .object({
-            apiSecretKey: z.string(),
-            ipfsGatewayUrl: z.string(),
-            ipfsUploadEndpoint: z.string(),
-            projectId: z.string(),
-        })
-        .optional()
-        .default({
-            apiSecretKey: 'c39492773b28820c8b3654178bf26946',
-            ipfsGatewayUrl: 'https://streamr-hub.infura-ipfs.io/ipfs/',
-            ipfsUploadEndpoint: 'https://ipfs.infura.io:5001/api/v0/add',
-            projectId: '2KjYUpR265h6R5M5njkSue5RGm7',
-        }),
     marketplaceChains: z.array(z.string()).optional().default([]),
     networkSubgraphUrl: z.string().optional(),
     slug: z.string().optional(),

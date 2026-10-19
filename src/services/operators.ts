@@ -54,9 +54,7 @@ export async function createOperator(
 
     const walletAddress = await signer.getAddress()
 
-    const imageIpfsCid = imageToUpload
-        ? await postImage(chainId, imageToUpload)
-        : undefined
+    const imageIpfsCid = imageToUpload ? await postImage(imageToUpload) : undefined
 
     const factory = new Contract(
         getContractAddress('operatorFactory', chainId),
@@ -213,7 +211,7 @@ export async function updateOperator(
             ) as unknown as OperatorContract
 
             const imageIpfsCid = imageToUpload
-                ? await postImage(chainId, imageToUpload)
+                ? await postImage(imageToUpload)
                 : operator.metadata.imageIpfsCid
 
             await call(operatorContract, 'updateMetadata', {

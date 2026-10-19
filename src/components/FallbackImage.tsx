@@ -2,6 +2,7 @@ import React from 'react'
 import { Img as ReactImg } from 'react-image'
 import styled from 'styled-components'
 import Logo from '~/shared/components/Logo'
+import { getImageCrossOrigin } from '~/utils/ipfs'
 
 type PlaceholderProps = {
     alt: string
@@ -27,11 +28,21 @@ interface Props {
 }
 
 export function FallbackImage({ src, alt, className, placeholder }: Props) {
+    const crossOrigin = getImageCrossOrigin(src)
+
     return (
         <ReactImg
             className={className}
             src={src}
             alt={alt}
+            /**
+             * `crossorigin` (lowercase) is consumed by react-image's preloader,
+             * `crossOrigin` ends up on the rendered `<img>`. Both have to match,
+             * otherwise the browser fetches the image twice with different
+             * request modes.
+             */
+            crossorigin={crossOrigin}
+            crossOrigin={crossOrigin}
             unloader={
                 placeholder || <DefaultImagePlaceholder alt={alt} className={className} />
             }

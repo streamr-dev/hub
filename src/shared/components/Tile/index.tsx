@@ -9,7 +9,8 @@ import Rect from '~/shared/components/Rect'
 import Skeleton from '~/shared/components/Skeleton'
 import SvgIcon from '~/shared/components/SvgIcon'
 import { COLORS } from '~/shared/utils/styled'
-import { useCurrentChainId, useCurrentChainKey } from '~/utils/chains'
+import { useCurrentChainKey } from '~/utils/chains'
+import { getImageCrossOrigin } from '~/utils/ipfs'
 import { Route as R, routeOptions } from '~/utils/routes'
 import { DataUnionBadge, StreamStatsBadge } from './Badge'
 import Summary from './Summary'
@@ -49,6 +50,11 @@ const UnstyledThumbnail = ({ src, skeletonize, alt, ...props }: ThumbnailProps) 
             {...props}
             alt={alt || undefined}
             src={src}
+            /**
+             * See `FallbackImage` for why both spellings are needed.
+             */
+            crossorigin={getImageCrossOrigin(src)}
+            crossOrigin={getImageCrossOrigin(src)}
             loader={<Image {...props} as={Skeleton} block />}
             unloader={
                 <Image {...props} as={Placeholder}>
@@ -191,8 +197,6 @@ function MarketplaceProductTile({
     showEditButton,
     ...props
 }: MarketplaceProductTileProps) {
-    const chainId = useCurrentChainId()
-
     const chainKey = useCurrentChainKey()
 
     return (
@@ -202,7 +206,7 @@ function MarketplaceProductTile({
                     <TileImageContainer autoSize>
                         <TileThumbnail
                             src={
-                                getProjectImageUrl(chainId, {
+                                getProjectImageUrl({
                                     ...product.metadata,
                                     imageIpfsCid:
                                         product.metadata.imageIpfsCid || undefined,

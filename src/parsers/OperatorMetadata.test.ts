@@ -104,9 +104,17 @@ describe('Operator metadata parsing', () => {
     })
 
     it('extracts proper image URL', () => {
-        expect(parse({ imageIpfsCid: 'foo' })).toMatchObject({
-            imageIpfsCid: 'foo',
-            imageUrl: 'https://streamr-hub.infura-ipfs.io/ipfs/foo',
-        })
+        const env = { ...process.env }
+
+        process.env.PINATA_GATEWAY_URL = 'https://example.mypinata.cloud/ipfs/'
+
+        try {
+            expect(parse({ imageIpfsCid: 'foo' })).toMatchObject({
+                imageIpfsCid: 'foo',
+                imageUrl: 'https://example.mypinata.cloud/ipfs/foo',
+            })
+        } finally {
+            process.env = env
+        }
     })
 })
