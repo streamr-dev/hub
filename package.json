@@ -128,7 +128,7 @@
     "@babel/preset-typescript": "^7.21.5",
     "@babel/runtime": "^7.22.5",
     "@chromatic-com/storybook": "^1.9.0",
-    "@cypress/webpack-preprocessor": "^5.17.1",
+    "@cypress/webpack-preprocessor": "^6.0.4",
     "@graphql-codegen/cli": "^5.0.3",
     "@graphql-codegen/typescript-operations": "^4.0.1",
     "@graphql-codegen/typescript-react-apollo": "^3.3.7",
