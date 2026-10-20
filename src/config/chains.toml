@@ -59,11 +59,6 @@ streamIndexerUrl = "https://stream-metrics.streamr.network/api"
 name = "Streamr Germany"
 address = "0x31546eEA76F2B2b3C5cC06B1c93601dc35c9D916"
 
-[[polygon.storageNodes]]
-name = "LogStore Decentralized Storage"
-address = "0x17f98084757a75add72bf6c5b5a6f69008c28a57"
-thirdPartyUrl = "https://docs.usher.so/logstore/network/specifics/overview#streamr-storage-provider"
-
 [[polygon.dataunionGraphNames]]
 chainId = 100
 name = "dataunions/data-unions-gnosis"
